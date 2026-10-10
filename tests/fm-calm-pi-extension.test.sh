@@ -31,7 +31,11 @@ record_pi_version_evidence() {
   [ -n "$version" ] || fail "$context could not determine the installed Pi version"
 }
 
+# shellcheck source=tests/assets/fm-calm-codemode.sh
+. "$ROOT/tests/assets/fm-calm-codemode.sh"
+
 cleanup() {
+  cleanup_codemode_e2e || exit 1
   if command -v tmux >/dev/null 2>&1; then
     tmux -L "$TMUX_SOCKET" kill-server 2>/dev/null || true
   fi
@@ -4994,5 +4998,7 @@ test_operational_followup_turn_e2e
 test_queued_operational_escape_e2e
 test_hidden_block_geometry_e2e
 test_working_ship_geometry_and_lifecycle
+test_codemode_rendering
+test_codemode_terminal_e2e
 test_export_dom_render_guard
 test_interactive_terminal_e2e

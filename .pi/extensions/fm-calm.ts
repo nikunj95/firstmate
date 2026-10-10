@@ -1,23 +1,8 @@
-// Firstmate's home-persistent Pi transcript presentation toggle.
-//
-// Verified against Pi 0.81.1, 0.82.0, and 0.84.4, which expose built-in ToolDefinitions, per-slot
-// renderers, renderShell: "self", session_start replacement reasons, agent_start and
-// agent_settled, ExtensionUIContext.setToolsExpanded(), setWorkingVisible(), setWidget()
-// with a disposable component factory, and setHiddenThinkingLabel().
-// ./lib/fm-calm-working-ship.ts owns the animated working presentation this file
-// installs. The focused tests pin those assumptions but never reject a
-// newer Pi solely for its version. The collapsed-thinking, operational-user, and
-// queued-operational presentation adapters probe the exact API they patch and degrade
-// independently with a diagnostic (see installCalmPresentationAdapter below) if a future
-// Pi removes it; Pi still exposes no global renderer for arbitrary built-in or custom rows.
-// docs/configuration.md owns the home-local Calm preference contract.
-//
-// Pi has one first-registration-wins ToolDefinition per tool name, with no merge or
-// unregister operation. Keep Calm-off registration empty; keep Calm-on load-time
-// registration synchronous because restored rows capture the registry before
-// session_start; and collision-check only the later first-activation path, when
-// getAllTools() is reliable. docs/calm-mode-feasibility.md owns the Pi-source evidence
-// and docs/calm.md owns the user-facing behavior and non-retroactive first-toggle bound.
+/**
+ * Present Firstmate's home-persistent Calm choice without changing transcript data.
+ * docs/calm.md owns presentation capabilities and built-in override constraints;
+ * docs/configuration.md owns the preference, and lib/fm-calm-working-ship.ts owns the boat.
+ */
 import { randomUUID } from "node:crypto";
 import {
   mkdirSync,
@@ -86,6 +71,13 @@ type RenderTheme<TParams extends TSchema, TDetails, TState> = Parameters<
 type RenderResult<TParams extends TSchema, TDetails, TState> = Parameters<
   NonNullable<ToolDefinition<TParams, TDetails, TState>["renderResult"]>
 >[0];
+
+type ToolPresentation = Pick<ToolDefinition<any, any, any>, "renderShell" | "renderCall" | "renderResult">;
+type RendererRegistrar = {
+  registerToolRenderer?: (
+    resolver: (name: string, next: () => ToolPresentation | undefined) => ToolPresentation | undefined,
+  ) => void;
+};
 
 type StandardShellState = {
   shell?: Box;
@@ -227,6 +219,109 @@ export default function (pi: ExtensionAPI) {
   const repaintCalmToolRows = (): void => {
     for (const invalidate of calmToolRowRepaints.values()) invalidate();
   };
+
+  let codemodeUI: ExtensionUIContext | undefined;
+  let codemodeWarningShown = false;
+
+  /** Disclose a missing Codemode presentation capability without changing execution. */
+  function reportCodemodeLimitation(reason: string): void {
+    if (codemodeWarningShown || !calmPresentationIsActive()) return;
+    codemodeWarningShown = true;
+    const message = `Firstmate Calm: Codemode transcript remains visible because ${reason}. Tool execution is unchanged.`;
+    console.error(message);
+    codemodeUI?.notify(message, "warning");
+  }
+
+  /** Warn only when Codemode exists on a Pi surface without renderer registration. */
+  function reportMissingCodemodeRegistrar(): void {
+    if (codemodeRegistrarLimitation && pi.getAllTools?.().some((tool) => tool.name === "codemode")) {
+      reportCodemodeLimitation(codemodeRegistrarLimitation);
+    }
+  }
+
+  /** Wrap only Codemode's installed renderers, preserving their components and framing. */
+  function wrapCodemodePresentation(original: ToolPresentation): ToolPresentation {
+    const shells = new WeakMap<object, StandardShellState>();
+    const renderCall = original.renderCall!;
+    const renderResult = original.renderResult!;
+
+    /** Keep stock slot components separate from the zero-height Calm components. */
+    function shellFor(state: object): StandardShellState {
+      let shell = shells.get(state);
+      if (!shell) {
+        shell = {};
+        shells.set(state, shell);
+      }
+      return shell;
+    }
+
+    /** Reproduce Pi's default tool framing around the installed slot renderers. */
+    function refreshShell(
+      shell: StandardShellState,
+      theme: RenderTheme<any, any, any>,
+      context: RenderContext<any, any, any> & { outputPad?: number },
+    ): Box {
+      const background = context.isPartial
+        ? (text: string) => theme.bg("toolPendingBg", text)
+        : context.isError
+          ? (text: string) => theme.bg("toolErrorBg", text)
+          : (text: string) => theme.bg("toolSuccessBg", text);
+      const box = shell.shell ?? new Box(context.outputPad ?? 1, 1, background);
+      shell.shell = box;
+      box.setBgFn(background);
+      const paddedBox = box as Box & { setPaddingX?: (padding: number) => void };
+      paddedBox.setPaddingX?.(context.outputPad ?? 1);
+      box.clear();
+      if (shell.call) box.addChild(shell.call);
+      if (shell.result) box.addChild(shell.result);
+      return box;
+    }
+
+    return {
+      renderShell: "self",
+      /** Hide the entire script shell, or delegate to the installed call renderer. */
+      renderCall(args, theme, context) {
+        rememberCalmToolRow(context.state, context.invalidate);
+        if (exportRendering) return renderCall(args, theme, context);
+        if (calmPresentationHides("assistant-tool-call")) return new Container();
+        const shell = shellFor(context.state);
+        shell.call = renderCall(args, theme, { ...context, lastComponent: shell.call });
+        return original.renderShell === "self" ? shell.call : refreshShell(shell, theme, context);
+      },
+      /** Hide nested-call summaries and output, or delegate to the installed result renderer. */
+      renderResult(result, options, theme, context) {
+        rememberCalmToolRow(context.state, context.invalidate);
+        if (exportRendering) return renderResult(result, options, theme, context);
+        if (calmPresentationHides("tool-result")) return new Container();
+        const shell = shellFor(context.state);
+        shell.result = renderResult(result, options, theme, { ...context, lastComponent: shell.result });
+        if (original.renderShell === "self") return shell.result;
+        refreshShell(shell, theme, context);
+        return new Container();
+      },
+    };
+  }
+
+  const rendererRegistrar = pi as ExtensionAPI & RendererRegistrar;
+  let codemodeRegistrarLimitation: string | undefined = "pi.registerToolRenderer() is unavailable";
+  if (typeof rendererRegistrar.registerToolRenderer === "function") {
+    try {
+      /** Leave every other tool's resolver chain and stock export renderers untouched. */
+      rendererRegistrar.registerToolRenderer((name, next) => {
+        const original = next();
+        if (name !== "codemode" || exportRendering) return original;
+        if (!original?.renderCall || !original.renderResult) {
+          reportCodemodeLimitation("its installed call/result renderers are unavailable");
+          return original;
+        }
+        return wrapCodemodePresentation(original);
+      });
+      codemodeRegistrarLimitation = undefined;
+    } catch (error) {
+      const reason = error instanceof Error ? error.message : String(error);
+      codemodeRegistrarLimitation = `pi.registerToolRenderer() could not register its presentation: ${reason}`;
+    }
+  }
 
   function wrapBuiltIn<TParams extends TSchema, TDetails, TState>(
     factory: DefinitionFactory<TParams, TDetails, TState>,
@@ -431,6 +526,8 @@ export default function (pi: ExtensionAPI) {
     exportRendering = false;
     setCalmPresentation(loadCalmPreference());
     setCalmStockExportRendering(false);
+    codemodeUI = ctx.ui;
+    reportMissingCodemodeRegistrar();
     publishPresentationState();
     agentRunActive = false;
     workingShipShown = false;
@@ -498,6 +595,7 @@ export default function (pi: ExtensionAPI) {
       persistCalmPreference(active);
       setCalmPresentation(active);
       if (active) activateBuiltInsIfNeeded(ctx.ui);
+      reportMissingCodemodeRegistrar();
       publishPresentationState();
       applyWorkingPresentation(ctx.ui, true);
       // Pi re-runs every assistant row's layout from this call even when the label is
