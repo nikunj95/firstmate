@@ -1,0 +1,124 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Pi 0.99.0 (no registerToolRenderer) + Firstmate Calm on: capability warning, Codemode visible and executing</title>
+<style>body{background:#11111b;color:#cdd6f4;font-family:"JetBrains Mono",Menlo,monospace;margin:24px}
+h1{font-size:18px}h2{font-size:14px;color:#cba6f7;margin:24px 0 6px}
+.term{background:#1e1e2e;color:#cdd6f4;padding:10px;border:1px solid #45475a;font-size:12px;line-height:15px;white-space:pre;display:inline-block;min-width:80ch}.term span{display:inline-block;height:15px;vertical-align:top}</style>
+</head><body><h1>Pi 0.99.0 (no registerToolRenderer) + Firstmate Calm on: capability warning, Codemode visible and executing</h1><section><h2>1. Startup: one UI warning naming the missing capability</h2><pre class="term">
+ <span style="color:rgb(205,154,34)">Warning: Firstmate Calm: Codemode transcript remains visible because pi.registerToolRenderer() is unavailable. Tool   </span>
+ <span style="color:rgb(205,154,34)">execution is unchanged.</span>                                                                                               
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<span style="color:rgb(108,118,123)">───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span>
+<span style="color:#1e1e2e;background:#cdd6f4"> </span>                                                                                                                      
+<span style="color:rgb(108,118,123)">───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span>
+<span style="color:rgb(126,136,142)">/private/tmp/fm-cmfx.hBkHd8</span>
+<span style="color:rgb(126,136,142)">0.0%/100k                                                                                                 deterministic</span>
+CODEMODE_TEST_READY CODEMODE_RENDERER_UNAVAILABLE</pre></section>
+<section><h2>2. Codemode executes and stays visible (stock)</h2><pre class="term"><span style="background:rgb(37,65,49)">                                                                                                                       </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(222,224,225);background:rgb(37,65,49);font-weight:bold">codemode</span><span style="background:rgb(37,65,49)">                                                                                                              </span>
+<span style="background:rgb(37,65,49)"> text(</span><span style="color:rgb(105,173,208);background:rgb(37,65,49)">await</span><span style="background:rgb(37,65,49)"> tools.read({</span><span style="color:rgb(93,179,186);background:rgb(37,65,49)">path</span><span style="background:rgb(37,65,49)">:</span><span style="color:rgb(222,141,90);background:rgb(37,65,49)">"sample.txt"</span><span style="background:rgb(37,65,49)">}));                                                                          </span>
+<span style="background:rgb(37,65,49)"> text(</span><span style="color:rgb(105,173,208);background:rgb(37,65,49)">await</span><span style="background:rgb(37,65,49)"> tools.fm_branch_outcomes({</span><span style="color:rgb(93,179,186);background:rgb(37,65,49)">recent</span><span style="background:rgb(37,65,49)">:</span><span style="color:rgb(104,183,141);background:rgb(37,65,49)">2</span><span style="background:rgb(37,65,49)">}));                                                                     </span>
+<span style="background:rgb(37,65,49)">                                                                                                                       </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(104,183,141);background:rgb(37,65,49)">✓</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(222,224,225);background:rgb(37,65,49)">read</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">{"path":"sample.txt"}</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(126,136,142);background:rgb(37,65,49)">2ms</span><span style="background:rgb(37,65,49)">                                                                                      </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(104,183,141);background:rgb(37,65,49)">✓</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(222,224,225);background:rgb(37,65,49)">fm_branch_outcomes</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">{"recent":2}</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(126,136,142);background:rgb(37,65,49)">1ms</span><span style="background:rgb(37,65,49)">                                                                                 </span>
+<span style="background:rgb(37,65,49)">                                                                                                                       </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">CODEMODE_READ_PRIVATE</span><span style="background:rgb(37,65,49)">                                                                                                 </span>
+<span style="background:rgb(37,65,49)">                                                                                                                       </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">OUTCOME_PRIVATE_RAW</span><span style="background:rgb(37,65,49)">                                                                                                   </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">seq=7 verdict=routine summary=TEST_ONLY</span><span style="background:rgb(37,65,49)">                                                                               </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">seq=6 verdict=routine summary=TEST_ONLY</span><span style="background:rgb(37,65,49)">                                                                               </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">... (3 more lines,</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(126,136,142);background:rgb(37,65,49)">ctrl+o</span><span style="color:rgb(157,165,169);background:rgb(37,65,49)"> to expand)</span><span style="background:rgb(37,65,49)">                                                                                  </span>
+<span style="background:rgb(37,65,49)">                                                                                                                       </span>
+
+<span style="background:rgb(37,65,49)">                                                                                                                       </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(222,224,225);background:rgb(37,65,49);font-weight:bold">codemode</span><span style="background:rgb(37,65,49)">                                                                                                              </span>
+<span style="background:rgb(37,65,49)"> text(</span><span style="color:rgb(105,173,208);background:rgb(37,65,49)">await</span><span style="background:rgb(37,65,49)"> tools.read({</span><span style="color:rgb(93,179,186);background:rgb(37,65,49)">path</span><span style="background:rgb(37,65,49)">:</span><span style="color:rgb(222,141,90);background:rgb(37,65,49)">"sample.txt"</span><span style="background:rgb(37,65,49)">}));                                                                          </span>
+<span style="background:rgb(37,65,49)"> text(</span><span style="color:rgb(105,173,208);background:rgb(37,65,49)">await</span><span style="background:rgb(37,65,49)"> tools.fm_branch_outcomes({</span><span style="color:rgb(93,179,186);background:rgb(37,65,49)">recent</span><span style="background:rgb(37,65,49)">:</span><span style="color:rgb(104,183,141);background:rgb(37,65,49)">2</span><span style="background:rgb(37,65,49)">}));                                                                     </span>
+<span style="background:rgb(37,65,49)">                                                                                                                       </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(104,183,141);background:rgb(37,65,49)">✓</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(222,224,225);background:rgb(37,65,49)">read</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">{"path":"sample.txt"}</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(126,136,142);background:rgb(37,65,49)">2ms</span><span style="background:rgb(37,65,49)">                                                                                      </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(104,183,141);background:rgb(37,65,49)">✓</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(222,224,225);background:rgb(37,65,49)">fm_branch_outcomes</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">{"recent":2}</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(126,136,142);background:rgb(37,65,49)">0ms</span><span style="background:rgb(37,65,49)">                                                                                 </span>
+<span style="background:rgb(37,65,49)">                                                                                                                       </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">CODEMODE_READ_PRIVATE</span><span style="background:rgb(37,65,49)">                                                                                                 </span>
+<span style="background:rgb(37,65,49)">                                                                                                                       </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">OUTCOME_PRIVATE_RAW</span><span style="background:rgb(37,65,49)">                                                                                                   </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">seq=7 verdict=routine summary=TEST_ONLY</span><span style="background:rgb(37,65,49)">                                                                               </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">seq=6 verdict=routine summary=TEST_ONLY</span><span style="background:rgb(37,65,49)">                                                                               </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">... (3 more lines,</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(126,136,142);background:rgb(37,65,49)">ctrl+o</span><span style="color:rgb(157,165,169);background:rgb(37,65,49)"> to expand)</span><span style="background:rgb(37,65,49)">                                                                                  </span>
+<span style="background:rgb(37,65,49)">                                                                                                                       </span>
+
+ AFTER_CODEMODE                                                                                                        
+
+<span style="color:rgb(108,118,123)">───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span>
+<span style="color:#1e1e2e;background:#cdd6f4"> </span>                                                                                                                      
+<span style="color:rgb(108,118,123)">───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span>
+<span style="color:rgb(126,136,142)">/private/tmp/fm-cmfx.hBkHd8</span>
+<span style="color:rgb(126,136,142)">↑2.6k ↓75 $0.000 2.7%/100k                                                                                deterministic</span>
+CODEMODE_TEST_READY CODEMODE_RENDERER_UNAVAILABLE</pre></section>
+<section><h2>3. /export still works</h2><pre class="term"><span style="background:rgb(37,65,49)"> text(</span><span style="color:rgb(105,173,208);background:rgb(37,65,49)">await</span><span style="background:rgb(37,65,49)"> tools.read({</span><span style="color:rgb(93,179,186);background:rgb(37,65,49)">path</span><span style="background:rgb(37,65,49)">:</span><span style="color:rgb(222,141,90);background:rgb(37,65,49)">"sample.txt"</span><span style="background:rgb(37,65,49)">}));                                                                          </span>
+<span style="background:rgb(37,65,49)"> text(</span><span style="color:rgb(105,173,208);background:rgb(37,65,49)">await</span><span style="background:rgb(37,65,49)"> tools.fm_branch_outcomes({</span><span style="color:rgb(93,179,186);background:rgb(37,65,49)">recent</span><span style="background:rgb(37,65,49)">:</span><span style="color:rgb(104,183,141);background:rgb(37,65,49)">2</span><span style="background:rgb(37,65,49)">}));                                                                     </span>
+<span style="background:rgb(37,65,49)">                                                                                                                       </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(104,183,141);background:rgb(37,65,49)">✓</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(222,224,225);background:rgb(37,65,49)">read</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">{"path":"sample.txt"}</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(126,136,142);background:rgb(37,65,49)">2ms</span><span style="background:rgb(37,65,49)">                                                                                      </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(104,183,141);background:rgb(37,65,49)">✓</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(222,224,225);background:rgb(37,65,49)">fm_branch_outcomes</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">{"recent":2}</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(126,136,142);background:rgb(37,65,49)">1ms</span><span style="background:rgb(37,65,49)">                                                                                 </span>
+<span style="background:rgb(37,65,49)">                                                                                                                       </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">CODEMODE_READ_PRIVATE</span><span style="background:rgb(37,65,49)">                                                                                                 </span>
+<span style="background:rgb(37,65,49)">                                                                                                                       </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">OUTCOME_PRIVATE_RAW</span><span style="background:rgb(37,65,49)">                                                                                                   </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">seq=7 verdict=routine summary=TEST_ONLY</span><span style="background:rgb(37,65,49)">                                                                               </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">seq=6 verdict=routine summary=TEST_ONLY</span><span style="background:rgb(37,65,49)">                                                                               </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">... (3 more lines,</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(126,136,142);background:rgb(37,65,49)">ctrl+o</span><span style="color:rgb(157,165,169);background:rgb(37,65,49)"> to expand)</span><span style="background:rgb(37,65,49)">                                                                                  </span>
+<span style="background:rgb(37,65,49)">                                                                                                                       </span>
+
+<span style="background:rgb(37,65,49)">                                                                                                                       </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(222,224,225);background:rgb(37,65,49);font-weight:bold">codemode</span><span style="background:rgb(37,65,49)">                                                                                                              </span>
+<span style="background:rgb(37,65,49)"> text(</span><span style="color:rgb(105,173,208);background:rgb(37,65,49)">await</span><span style="background:rgb(37,65,49)"> tools.read({</span><span style="color:rgb(93,179,186);background:rgb(37,65,49)">path</span><span style="background:rgb(37,65,49)">:</span><span style="color:rgb(222,141,90);background:rgb(37,65,49)">"sample.txt"</span><span style="background:rgb(37,65,49)">}));                                                                          </span>
+<span style="background:rgb(37,65,49)"> text(</span><span style="color:rgb(105,173,208);background:rgb(37,65,49)">await</span><span style="background:rgb(37,65,49)"> tools.fm_branch_outcomes({</span><span style="color:rgb(93,179,186);background:rgb(37,65,49)">recent</span><span style="background:rgb(37,65,49)">:</span><span style="color:rgb(104,183,141);background:rgb(37,65,49)">2</span><span style="background:rgb(37,65,49)">}));                                                                     </span>
+<span style="background:rgb(37,65,49)">                                                                                                                       </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(104,183,141);background:rgb(37,65,49)">✓</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(222,224,225);background:rgb(37,65,49)">read</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">{"path":"sample.txt"}</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(126,136,142);background:rgb(37,65,49)">2ms</span><span style="background:rgb(37,65,49)">                                                                                      </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(104,183,141);background:rgb(37,65,49)">✓</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(222,224,225);background:rgb(37,65,49)">fm_branch_outcomes</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">{"recent":2}</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(126,136,142);background:rgb(37,65,49)">0ms</span><span style="background:rgb(37,65,49)">                                                                                 </span>
+<span style="background:rgb(37,65,49)">                                                                                                                       </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">CODEMODE_READ_PRIVATE</span><span style="background:rgb(37,65,49)">                                                                                                 </span>
+<span style="background:rgb(37,65,49)">                                                                                                                       </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">OUTCOME_PRIVATE_RAW</span><span style="background:rgb(37,65,49)">                                                                                                   </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">seq=7 verdict=routine summary=TEST_ONLY</span><span style="background:rgb(37,65,49)">                                                                               </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">seq=6 verdict=routine summary=TEST_ONLY</span><span style="background:rgb(37,65,49)">                                                                               </span>
+<span style="background:rgb(37,65,49)"> </span><span style="color:rgb(157,165,169);background:rgb(37,65,49)">... (3 more lines,</span><span style="background:rgb(37,65,49)"> </span><span style="color:rgb(126,136,142);background:rgb(37,65,49)">ctrl+o</span><span style="color:rgb(157,165,169);background:rgb(37,65,49)"> to expand)</span><span style="background:rgb(37,65,49)">                                                                                  </span>
+<span style="background:rgb(37,65,49)">                                                                                                                       </span>
+
+ AFTER_CODEMODE                                                                                                        
+
+ <span style="color:rgb(126,136,142)">Session exported to: /tmp/fm-cmfx.hBkHd8/export.html</span>                                                                  
+
+<span style="color:rgb(108,118,123)">───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span>
+<span style="color:#1e1e2e;background:#cdd6f4"> </span>                                                                                                                      
+<span style="color:rgb(108,118,123)">───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span>
+<span style="color:rgb(126,136,142)">/private/tmp/fm-cmfx.hBkHd8</span>
+<span style="color:rgb(126,136,142)">↑2.6k ↓75 $0.000 2.7%/100k                                                                                deterministic</span>
+CODEMODE_TEST_READY CODEMODE_RENDERER_UNAVAILABLE</pre></section></body></html>

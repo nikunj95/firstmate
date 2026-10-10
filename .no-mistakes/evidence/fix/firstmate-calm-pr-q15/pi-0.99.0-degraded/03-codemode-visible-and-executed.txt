@@ -1,0 +1,40 @@
+                                                                                                                       
+ codemode                                                                                                              
+ text(await tools.read({path:"sample.txt"}));                                                                          
+ text(await tools.fm_branch_outcomes({recent:2}));                                                                     
+                                                                                                                       
+ ✓ read {"path":"sample.txt"} 2ms                                                                                      
+ ✓ fm_branch_outcomes {"recent":2} 1ms                                                                                 
+                                                                                                                       
+ CODEMODE_READ_PRIVATE                                                                                                 
+                                                                                                                       
+ OUTCOME_PRIVATE_RAW                                                                                                   
+ seq=7 verdict=routine summary=TEST_ONLY                                                                               
+ seq=6 verdict=routine summary=TEST_ONLY                                                                               
+ ... (3 more lines, ctrl+o to expand)                                                                                  
+                                                                                                                       
+
+                                                                                                                       
+ codemode                                                                                                              
+ text(await tools.read({path:"sample.txt"}));                                                                          
+ text(await tools.fm_branch_outcomes({recent:2}));                                                                     
+                                                                                                                       
+ ✓ read {"path":"sample.txt"} 2ms                                                                                      
+ ✓ fm_branch_outcomes {"recent":2} 0ms                                                                                 
+                                                                                                                       
+ CODEMODE_READ_PRIVATE                                                                                                 
+                                                                                                                       
+ OUTCOME_PRIVATE_RAW                                                                                                   
+ seq=7 verdict=routine summary=TEST_ONLY                                                                               
+ seq=6 verdict=routine summary=TEST_ONLY                                                                               
+ ... (3 more lines, ctrl+o to expand)                                                                                  
+                                                                                                                       
+
+ AFTER_CODEMODE                                                                                                        
+
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                                       
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+/private/tmp/fm-cmfx.hBkHd8
+↑2.6k ↓75 $0.000 2.7%/100k                                                                                deterministic
+CODEMODE_TEST_READY CODEMODE_RENDERER_UNAVAILABLE

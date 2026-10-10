@@ -1,0 +1,16 @@
+lab session: fm-lab-cm-offstart-73446-6803
+pi: 1.1.0 (/Users/nikunjkotecha/.npm-global/bin/pi); start config/calm=off
+ok screen start: contains 'CODEMODE_TEST_READY'
+> submit: /calm-codemode-test
+ok screen calm-off-codemode-stock: contains 'AFTER_CODEMODE'
+ok screen calm-off-codemode-stock: codemode-stock 
+> submit: /calm
+ok screen first-activation-codemode-hidden: codemode-hidden 
+config/calm after first /calm: on
+> submit: /calm-codemode-unrelated
+ok screen calm-on-unrelated-tool-visible: contains 'AFTER_UNRELATED'
+ok unrelated custom tool row stays visible under Calm
+ok no Codemode capability warning on a Pi with registerToolRenderer()
+> key: ctrl+d
+SCENARIO offstart PASSED
+lab teardown ok: fm-lab-cm-offstart-73446-6803 (default-session tripwire unchanged)

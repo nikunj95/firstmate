@@ -1,0 +1,36 @@
+lab session: fm-lab-cm-full-64943-16849
+pi: 1.1.0 (/Users/nikunjkotecha/.npm-global/bin/pi); start config/calm=on
+ok screen start: contains 'CODEMODE_TEST_READY'
+> submit: /calm-codemode-baseline
+ok screen baseline-no-tool-turn: contains 'BASELINE_FINAL'
+> submit: /calm-codemode-test
+ok screen calm-on-codemode-hidden: contains 'AFTER_CODEMODE'
+ok screen calm-on-codemode-hidden: hidden user-to-final row distance: codemode turn 3 == no-tool baseline 3
+> key: ctrl+o
+ok screen calm-on-ctrl-o-expanded: contains 'Tool output: expanded'
+ok screen calm-on-ctrl-o-expanded: hidden user-to-final row distance: codemode turn 3 == no-tool baseline 3
+> submit: /calm
+ok screen calm-off-stock-expanded: contains 'OUTCOME_EXPANDED_TAIL'
+ok screen calm-off-stock-expanded: codemode-stock 
+config/calm after /calm: off
+> key: ctrl+o
+ok screen calm-off-stock-collapsed: contains 'more lines'
+ok screen calm-off-stock-collapsed: codemode-stock 
+> submit: /calm
+ok screen calm-on-rehidden: hidden user-to-final row distance: codemode turn 3 == no-tool baseline 3
+config/calm after second /calm: on
+> submit: /export /tmp/fm-cmfx.CaMftm/export.html
+ok screen calm-on-export: contains 'Session exported to:'
+ok screen calm-on-export: hidden user-to-final row distance: codemode turn 3 == no-tool baseline 3
+ok session JSONL byte-identical after toggles, expansion and export
+> key: ctrl+d
+ok screen restart-restored-hidden: contains 'AFTER_CODEMODE'
+ok screen restart-restored-hidden: hidden user-to-final row distance: codemode turn 3 == no-tool baseline 3
+> submit: /calm
+ok screen restart-calm-off-stock: contains 'OUTCOME_PRIVATE_RAW'
+ok screen restart-calm-off-stock: codemode-stock 
+ok session JSONL byte-identical after restart and restored toggle
+ok - repeated real Codemode calls preserve parent/child events, original output, model context, nested usage, session data and stock HTML export
+> key: ctrl+d
+SCENARIO full PASSED
+lab teardown ok: fm-lab-cm-full-64943-16849 (default-session tripwire unchanged)

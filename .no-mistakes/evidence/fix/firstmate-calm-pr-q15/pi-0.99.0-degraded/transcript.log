@@ -1,0 +1,14 @@
+lab session: fm-lab-cm-degraded-74445-4174
+pi: 0.99.0 (/tmp/fm-pi099.5ihLlv/node_modules/.bin/pi); start config/calm=on
+ok screen start-capability-warning: contains 'CODEMODE_TEST_READY'
+ok screen start-capability-warning: contains 'pi.registerToolRenderer() is unavailable'
+> submit: /calm-codemode-test
+ok screen codemode-visible-and-executed: contains 'AFTER_CODEMODE'
+ok screen codemode-visible-and-executed: codemode-stock 
+> submit: /export /tmp/fm-cmfx.hBkHd8/export.html
+ok screen export: contains 'Session exported to:'
+ok export written (  317744 bytes)
+ok degraded Pi executed 2 Codemode scripts with original nested output intact
+> key: ctrl+d
+SCENARIO degraded PASSED
+lab teardown ok: fm-lab-cm-degraded-74445-4174 (default-session tripwire unchanged)

@@ -1,0 +1,40 @@
+                                                                                                                       
+ GENUINE_CODEMODE                                                                                                      
+                                                                                                                       
+
+                                                                                                                       
+ read ordinary.txt                                                                                                     
+                                                                                                                       
+
+ AFTER_CODEMODE                                                                                                        
+
+ Tool output: collapsed                                                                                                
+
+                                                                                                                       
+ GENUINE_UNRELATED                                                                                                     
+                                                                                                                       
+
+                                                                                                                       
+ unrelated_probe                                                                                                       
+ UNRELATED_PROBE_VISIBLE                                                                                               
+                                                                                                                       
+
+ AFTER_UNRELATED                                                                                                       
+
+
+
+
+
+
+
+
+
+
+
+
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                                       
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+/private/tmp/fm-cmfx.LApgDQ
+↑1.6k ↓84 $0.000 1.6%/100k                                                                                deterministic
+CODEMODE_TEST_READY CODEMODE_RENDERER_AVAILABLE

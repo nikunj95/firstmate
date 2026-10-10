@@ -1,0 +1,40 @@
+                                                                                                                       
+ GENUINE_CODEMODE                                                                                                      
+                                                                                                                       
+
+                                                                                                                       
+ read ordinary.txt                                                                                                     
+                                                                                                                       
+
+ AFTER_CODEMODE                                                                                                        
+
+ Tool output: collapsed                                                                                                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                                       
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+/private/tmp/fm-cmfx.LApgDQ
+↑1.6k ↓75 $0.000 1.6%/100k                                                                                deterministic
+CODEMODE_TEST_READY CODEMODE_RENDERER_AVAILABLE

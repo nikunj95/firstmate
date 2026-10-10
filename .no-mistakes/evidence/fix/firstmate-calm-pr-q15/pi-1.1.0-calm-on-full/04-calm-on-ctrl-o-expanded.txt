@@ -1,0 +1,40 @@
+                                                                                                                       
+ GENUINE_BASELINE                                                                                                      
+                                                                                                                       
+
+ BASELINE_FINAL                                                                                                        
+
+                                                                                                                       
+ GENUINE_CODEMODE                                                                                                      
+                                                                                                                       
+
+ AFTER_CODEMODE                                                                                                        
+
+ Tool output: expanded                                                                                                 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                                       
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+/private/tmp/fm-cmfx.CaMftm
+↑1.6k ↓79 $0.000 1.7%/100k                                                                                deterministic
+CODEMODE_TEST_READY CODEMODE_RENDERER_AVAILABLE
