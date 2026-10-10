@@ -110,13 +110,13 @@ Pi's supported presentation API does not expose a global transcript filter.
 These rows remain visible:
 
 - Expanded reasoning and its reserved spacing.
-- Built-in tool images.
+- Tool images, including Codemode's.
 - User-bash rows.
 - Skill and summary rows.
 - Generic status notices.
 - Other arbitrary custom-tool or extension rows.
 
-These are supported-API boundaries rather than hidden-content failures.
+Custom-tool and extension rows remain outside Calm's owned coverage; the other rows are supported-API boundaries rather than hidden-content failures.
 
 ## Pi compatibility
 

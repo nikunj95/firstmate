@@ -34,7 +34,7 @@ export default function (pi: ExtensionAPI): void {
     /** Return outcome-shaped text and usage without opening any fleet store. */
     async execute() {
       return {
-        content: [{ type: "text", text: "OUTCOME_PRIVATE_RAW\nseq=7 verdict=routine summary=TEST_ONLY" }],
+        content: [{ type: "text", text: "OUTCOME_PRIVATE_RAW\nseq=7 verdict=routine summary=TEST_ONLY\nseq=6 verdict=routine summary=TEST_ONLY\nseq=5 verdict=routine summary=TEST_ONLY\nseq=4 verdict=routine summary=TEST_ONLY\nOUTCOME_EXPANDED_TAIL" }],
         details: {}, usage: { input: 11, output: 2, totalTokens: 13, cost: { total: 0.0002 } },
       };
     },

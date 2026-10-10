@@ -39,7 +39,7 @@ cleanup_codemode_e2e() {
     CODEMODE_TMUX_DIR=
   fi
   if [ -n "${CODEMODE_HERDR_SESSION:-}" ]; then
-    "$CODEMODE_HERDR_HELPER" teardown "$CODEMODE_HERDR_SESSION" || return 1
+    "$ROOT/bin/fm-herdr-lab.sh" teardown "$CODEMODE_HERDR_SESSION" || return 1
     CODEMODE_HERDR_SESSION=
   fi
 }
@@ -50,7 +50,7 @@ codemode_submit() {
     TMUX_TMPDIR="$CODEMODE_TMUX_DIR" tmux -L codemode send-keys -t codemode -l "$1"
     TMUX_TMPDIR="$CODEMODE_TMUX_DIR" tmux -L codemode send-keys -t codemode Enter
   else
-    "$CODEMODE_HERDR_HELPER" run "$CODEMODE_HERDR_SESSION" pane run "$CODEMODE_PANE" "$1"
+    "$ROOT/bin/fm-herdr-lab.sh" run "$CODEMODE_HERDR_SESSION" pane run "$CODEMODE_PANE" "$1"
   fi
 }
 
@@ -59,8 +59,17 @@ codemode_expand() {
   if [ -n "${CODEMODE_TMUX_DIR:-}" ]; then
     TMUX_TMPDIR="$CODEMODE_TMUX_DIR" tmux -L codemode send-keys -t codemode C-o
   else
-    "$CODEMODE_HERDR_HELPER" run "$CODEMODE_HERDR_SESSION" pane send-keys "$CODEMODE_PANE" ctrl+o
+    "$ROOT/bin/fm-herdr-lab.sh" run "$CODEMODE_HERDR_SESSION" pane send-keys "$CODEMODE_PANE" ctrl+o
   fi
+}
+
+# Launch one Pi command in a fresh workspace of the private Herdr session.
+codemode_herdr_launch() {
+  local fixture=$1 launch=$2 workspace
+  workspace=$("$ROOT/bin/fm-herdr-lab.sh" run "$CODEMODE_HERDR_SESSION" workspace create --cwd "$fixture" --env "HOME=$fixture" --env "ZDOTDIR=$fixture" --no-focus) \
+    || fail 'could not create the private Herdr Codemode workspace'
+  CODEMODE_PANE=$(printf '%s' "$workspace" | jq -er '.result.root_pane.pane_id') || fail 'Herdr workspace create did not return a pane id'
+  "$ROOT/bin/fm-herdr-lab.sh" run "$CODEMODE_HERDR_SESSION" pane run "$CODEMODE_PANE" "$launch" || fail 'could not launch the private Herdr Codemode test'
 }
 
 # Exit Pi through its stock empty-editor shortcut rather than submitting a model prompt.
@@ -68,7 +77,7 @@ codemode_exit() {
   if [ -n "${CODEMODE_TMUX_DIR:-}" ]; then
     TMUX_TMPDIR="$CODEMODE_TMUX_DIR" tmux -L codemode send-keys -t codemode C-d
   else
-    "$CODEMODE_HERDR_HELPER" run "$CODEMODE_HERDR_SESSION" pane send-keys "$CODEMODE_PANE" ctrl+d
+    "$ROOT/bin/fm-herdr-lab.sh" run "$CODEMODE_HERDR_SESSION" pane send-keys "$CODEMODE_PANE" ctrl+d
   fi
 }
 
@@ -77,7 +86,7 @@ codemode_capture() {
   if [ -n "${CODEMODE_TMUX_DIR:-}" ]; then
     TMUX_TMPDIR="$CODEMODE_TMUX_DIR" tmux -L codemode capture-pane -p -t codemode
   else
-    "$CODEMODE_HERDR_HELPER" run "$CODEMODE_HERDR_SESSION" pane read "$CODEMODE_PANE" --source visible --format text --raw
+    "$ROOT/bin/fm-herdr-lab.sh" run "$CODEMODE_HERDR_SESSION" pane read "$CODEMODE_PANE" --source visible --format text --raw
   fi | node -e 'let text=""; process.stdin.on("data", part => text += part); process.stdin.on("end", () => process.stdout.write(text.replace(/\x1b\[[0-9;]*m/g, "").replace(/\r/g, "")));'
 }
 
@@ -91,6 +100,18 @@ codemode_wait() {
     attempt=$((attempt + 1))
   done
   fail "Pi Codemode did not render $needle: $(< "$file")"
+}
+
+# Await the gapless Calm-hidden rendering, reporting the last failed assertion on timeout.
+codemode_wait_hidden() {
+  local file=$1 attempt=0
+  while [ "$attempt" -lt 100 ]; do
+    codemode_capture > "$file"
+    assert_codemode_hidden "$file" 2>/dev/null && return 0
+    sleep 0.1
+    attempt=$((attempt + 1))
+  done
+  assert_codemode_hidden "$file"
 }
 
 # Assert both absence and the exact no-tool geometry around the visible final reply.
@@ -111,7 +132,7 @@ JS
 
 # Drive real installed Pi, its Codemode sandbox, toggles, exports and restored history.
 test_codemode_terminal_e2e() {
-  local fixture="$TMP_ROOT/codemode-e2e" launch workspace session_file tui_mode
+  local fixture="$TMP_ROOT/codemode-e2e" launch session_file tui_mode
   if ! command -v pi >/dev/null 2>&1 || ! command -v node >/dev/null 2>&1 || [ ! -f "$PI_PACKAGE_DIR/dist/extensions/codemode/renderer.js" ]; then
     echo 'skip: installed Pi Codemode and node are needed for the Codemode TUI case'
     return
@@ -132,16 +153,13 @@ test_codemode_terminal_e2e() {
   launch="bash '$fixture/launch.sh'"
   if command -v tmux >/dev/null 2>&1; then
     CODEMODE_LAB_HOME="$fixture/terminal-home"
-    "$ROOT/bin/fm-lab-home.sh" create "$CODEMODE_LAB_HOME" >/dev/null
-    CODEMODE_TMUX_DIR=$("$ROOT/bin/fm-lab-home.sh" tmux-dir "$CODEMODE_LAB_HOME")
-    TMUX_TMPDIR="$CODEMODE_TMUX_DIR" tmux -L codemode new-session -d -s codemode -x 120 -y 44 "$launch"
+    "$ROOT/bin/fm-lab-home.sh" create "$CODEMODE_LAB_HOME" >/dev/null || fail 'could not create the private Codemode lab home'
+    CODEMODE_TMUX_DIR=$("$ROOT/bin/fm-lab-home.sh" tmux-dir "$CODEMODE_LAB_HOME") || fail 'could not create the private Codemode tmux socket dir'
+    TMUX_TMPDIR="$CODEMODE_TMUX_DIR" tmux -L codemode new-session -d -s codemode -x 120 -y 44 "$launch" || fail 'could not launch the private tmux Codemode test'
   else
-    CODEMODE_HERDR_HELPER=${FM_CALM_HERDR_LAB_HELPER:-"$ROOT/bin/fm-herdr-lab.sh"}
-    CODEMODE_HERDR_SESSION=$("$CODEMODE_HERDR_HELPER" name firstmate-calm-codemode)
-    "$CODEMODE_HERDR_HELPER" provision "$CODEMODE_HERDR_SESSION" || fail 'could not provision the private Herdr Codemode test'
-    workspace=$("$CODEMODE_HERDR_HELPER" run "$CODEMODE_HERDR_SESSION" workspace create --cwd "$fixture" --env "HOME=$fixture" --env "ZDOTDIR=$fixture" --no-focus)
-    CODEMODE_PANE=$(printf '%s' "$workspace" | jq -r '.result.root_pane.pane_id')
-    "$CODEMODE_HERDR_HELPER" run "$CODEMODE_HERDR_SESSION" pane run "$CODEMODE_PANE" "$launch"
+    CODEMODE_HERDR_SESSION=$("$ROOT/bin/fm-herdr-lab.sh" name firstmate-calm-codemode) || fail 'could not name the private Herdr Codemode test'
+    "$ROOT/bin/fm-herdr-lab.sh" provision "$CODEMODE_HERDR_SESSION" || fail 'could not provision the private Herdr Codemode test'
+    codemode_herdr_launch "$fixture" "$launch"
   fi
   codemode_wait "$fixture/start.txt" CODEMODE_TEST_READY
   if grep -Fq CODEMODE_RENDERER_UNAVAILABLE "$fixture/start.txt"; then
@@ -163,20 +181,17 @@ test_codemode_terminal_e2e() {
   session_file=$(find "$fixture/sessions" -name '*.jsonl' -type f | head -1)
   cp "$session_file" "$fixture/original.jsonl"
   codemode_expand
-  sleep 0.3
-  codemode_capture > "$fixture/hidden-expanded.txt"
+  codemode_wait "$fixture/hidden-expanded.txt" 'Tool output: expanded'
   assert_codemode_hidden "$fixture/hidden-expanded.txt" || fail 'expansion exposed Codemode under Calm'
   codemode_submit /calm
-  codemode_wait "$fixture/stock-expanded.txt" OUTCOME_PRIVATE_RAW
+  codemode_wait "$fixture/stock-expanded.txt" OUTCOME_EXPANDED_TAIL
   assert_contains "$(< "$fixture/stock-expanded.txt")" 'tools.fm_branch_outcomes' 'Calm off did not restore the original script'
   codemode_expand
-  sleep 0.3
-  codemode_capture > "$fixture/stock-collapsed.txt"
+  codemode_wait "$fixture/stock-collapsed.txt" 'more lines'
   assert_contains "$(< "$fixture/stock-collapsed.txt")" OUTCOME_PRIVATE_RAW 'collapse lost the stock Codemode output'
+  assert_not_contains "$(< "$fixture/stock-collapsed.txt")" OUTCOME_EXPANDED_TAIL 'collapse kept the expanded Codemode output'
   codemode_submit /calm
-  sleep 0.3
-  codemode_capture > "$fixture/rehidden.txt"
-  assert_codemode_hidden "$fixture/rehidden.txt" || fail 'Calm toggle did not rehide Codemode'
+  codemode_wait_hidden "$fixture/rehidden.txt" || fail 'Calm toggle did not rehide Codemode'
   codemode_submit "/export $fixture/export.html"
   codemode_wait "$fixture/export.txt" 'Session exported to:'
   assert_codemode_hidden "$fixture/export.txt" || fail 'export left Codemode visible'
@@ -185,11 +200,9 @@ test_codemode_terminal_e2e() {
   sleep 1
   if [ -n "${CODEMODE_TMUX_DIR:-}" ]; then
     TMUX_TMPDIR="$CODEMODE_TMUX_DIR" tmux -L codemode kill-session -t codemode 2>/dev/null || true
-    TMUX_TMPDIR="$CODEMODE_TMUX_DIR" tmux -L codemode new-session -d -s codemode -x 120 -y 44 "$launch --session '$session_file'"
+    TMUX_TMPDIR="$CODEMODE_TMUX_DIR" tmux -L codemode new-session -d -s codemode -x 120 -y 44 "$launch --session '$session_file'" || fail 'could not relaunch the private tmux Codemode test'
   else
-    workspace=$("$CODEMODE_HERDR_HELPER" run "$CODEMODE_HERDR_SESSION" workspace create --cwd "$fixture" --env "HOME=$fixture" --env "ZDOTDIR=$fixture" --no-focus)
-    CODEMODE_PANE=$(printf '%s' "$workspace" | jq -r '.result.root_pane.pane_id')
-    "$CODEMODE_HERDR_HELPER" run "$CODEMODE_HERDR_SESSION" pane run "$CODEMODE_PANE" "$launch --session '$session_file'"
+    codemode_herdr_launch "$fixture" "$launch --session '$session_file'"
   fi
   codemode_wait "$fixture/restored.txt" AFTER_CODEMODE
   assert_codemode_hidden "$fixture/restored.txt" || fail 'restart exposed Codemode history'
