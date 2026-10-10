@@ -312,8 +312,6 @@ The same real-Pi reproduction then delivered the notification exactly once in a 
 
 ## Regression coverage
 
-`tests/fm-calm-pi-extension.test.sh` also exercises Codemode capability degradation, exact installed stock-renderer parity, zero-height nested-call presentation, repeated real sandbox execution, toggle and restart restoration, provider context, nested usage and stock export/share rendering through its `tests/assets/fm-calm-codemode*` fixtures.
-The deterministic TUI runs on a private tmux server or a guarded named Herdr lab and never opens a real outcome store or uses an authenticated model.
 `tests/fm-calm-pi-extension.test.sh` compares wrapped and stock renderers and verifies all seven built-ins plus `fm_watch_arm_pi`; its rendered HTML export check accepts either omission or default-hidden hook rows for legacy synthetic messages while rejecting visible leakage.
 `tests/fm-pi-branch-extension.test.sh` verifies both `fm_branch_outcomes` and `fm_branch_processed` call headers against pre-0.99 and 0.99+ Pi stock rendering, plus Calm toggling, capability-probed all-line versus collapsed stock result output, exact expanded output, and export rendering for outcomes.
 Together they exercise redraw of already-rendered tool, thinking, current operational-user, and legacy synthetic rows, and cover every policy class.
@@ -323,6 +321,8 @@ The operational provider path covers Calm loaded on, loaded off, default prefere
 It asserts one persisted and rendered captain answer, exact user-role operational envelopes in order, no replacement custom messages, one processing result, zero operational transcript rows, and the two-row neighboring-assistant geometry for live, adjacent, and restart paths.
 Quoted current markers, ASCII-only labels, ordinary text before a marker, unrelated U+2063 placement, and image-bearing input remain visible in component and native transcript checks.
 Queued-row coverage drives Pi's real listing and restore methods over a stand-in session for each capability-check branch, including a hidden row kept when the classifier cannot answer again and a refused continuation that re-queues instead of dropping, and repeats Escape in a real Pi TUI with Calm on, with a captain message queued beside the notification, and with Calm off.
+`tests/fm-calm-pi-extension.test.sh` also exercises Codemode capability degradation, exact installed stock-renderer parity, zero-height nested-call presentation, repeated real sandbox execution, toggle and restart restoration, provider context, nested usage and stock export/share rendering through its `tests/assets/fm-calm-codemode*` fixtures.
+Its Codemode TUI runs on a private tmux server or a guarded named Herdr lab and never opens a real outcome store or uses an authenticated model.
 `tests/fm-calm-pi-queue-retention-live-e2e.test.sh` is the default-on, token-free guard that probes a running Pi session for every member the check requires and fails naming the installed Pi version.
 `tests/fm-pi-primary-live-e2e.test.sh` also proves the working ship replaces the built-in `Working...` row while Calm is active on the credentialed provider path, and that it clears when the run settles, before continuing its ordinary watcher lifecycle.
 `tests/fm-pi-primary-types.test.sh` performs strict no-emit TypeScript checking against whichever Pi declarations are installed, without pinning a version of its own.
