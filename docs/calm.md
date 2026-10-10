@@ -133,7 +133,7 @@ If Pi removes one of those seams, Calm logs a diagnostic naming the unavailable 
 
 Calm registers only a renderer resolver for the exact `codemode` tool name, whether the saved choice starts on or off.
 On Pi surfaces without `pi.registerToolRenderer()`, or without Codemode's installed call/result renderers, Codemode remains normally visible and executable.
-When Calm is active, a diagnostic names the exact missing presentation capability; other tools and Calm adapters continue to work.
+When Calm is active, one warning names the exact missing presentation capability, as a Pi UI notification when a UI is available and on stderr otherwise; other tools and Calm adapters continue to work.
 Codemode's images retain the [documented image boundary](#what-stays-visible-on-pi), and unrelated custom tools and warnings are not hidden.
 
 ### Session check for queued inputs
