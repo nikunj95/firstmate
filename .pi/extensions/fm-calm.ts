@@ -306,10 +306,10 @@ export default function (pi: ExtensionAPI) {
   let codemodeRegistrarLimitation: string | undefined = "pi.registerToolRenderer() is unavailable";
   if (typeof rendererRegistrar.registerToolRenderer === "function") {
     try {
-      /** Leave every other tool's resolver chain and stock export renderers untouched. */
+      /** Wrap only Codemode, leaving every other tool's resolver chain untouched. */
       rendererRegistrar.registerToolRenderer((name, next) => {
         const original = next();
-        if (name !== "codemode" || exportRendering) return original;
+        if (name !== "codemode") return original;
         if (!original?.renderCall || !original.renderResult) {
           reportCodemodeLimitation("its installed call/result renderers are unavailable");
           return original;

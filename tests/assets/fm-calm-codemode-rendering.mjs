@@ -147,16 +147,20 @@ if (presentations.length > 1) {
   visibility.setCalmPresentation(true);
   for (const command of ["/export test.html", "/share"]) {
     calm.submit(command);
-    assert.equal(calm.resolver("codemode", () => original), original, `${command} changed stock renderers`);
+    const live = row(calm.resolver("codemode", () => original));
     const lookup = () => calm.resolver("codemode", () => original);
     const exporter = createToolHtmlRenderer({ getToolDefinition: lookup, getToolRenderers: lookup, theme, cwd: process.cwd() });
+    const stockExporter = createToolHtmlRenderer({ getToolDefinition: () => original, getToolRenderers: () => original, theme, cwd: process.cwd() });
     const args = { code: 'text(await tools.fm_branch_outcomes({recent:2}));' };
-    assert(exporter.renderCall(command, "codemode", args).includes("tools.fm_branch_outcomes"));
-    assert(exporter.renderResult(command, "codemode", result.content, result.details, false).expanded.includes("RAW_OUTPUT_17"));
+    const exportedCall = exporter.renderCall(command, "codemode", args);
+    assert.equal(exportedCall, stockExporter.renderCall(command, "codemode", args), `${command} changed stock call rendering`);
+    assert(exportedCall.includes("tools.fm_branch_outcomes"));
+    const exportedResult = exporter.renderResult(command, "codemode", result.content, result.details, false);
+    assert.deepEqual(exportedResult, stockExporter.renderResult(command, "codemode", result.content, result.details, false), `${command} changed stock result rendering`);
+    assert(exportedResult.expanded.includes("RAW_OUTPUT_17"));
     await new Promise(resolve => setTimeout(resolve, 0));
-    const restored = row(calm.resolver("codemode", () => original));
-    restored.updateResult(result);
-    assert.deepEqual(restored.render(80), [], "export/share left a visible shell");
+    live.updateResult(result);
+    assert.deepEqual(live.render(80), [], `a row constructed during ${command} stayed visible`);
   }
   setCapabilities({ images: "iterm2", trueColor: true, hyperlinks: false });
   const image = row(calm.resolver("codemode", () => original), undefined, { showImages: true });

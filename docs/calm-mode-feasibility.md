@@ -37,7 +37,7 @@ Codemode arrived in Pi 0.99.0 and composes its nested calls inside its own resul
 A child `read` or `fm_branch_outcomes` renderer therefore cannot hide the parent script, nested-call summary or emitted output.
 Calm uses the supported `pi.registerToolRenderer()` resolver chain introduced in Pi 1.0.1 for the exact `codemode` name, obtains the installed renderers through `next()`, and adds only presentation functions.
 An empty self-rendered call and result remove the complete text shell and its leading spacer.
-While visible, Calm retains the installed slot components and reproduces Pi's default framing or preserves an installed self-framed renderer; stock export/share rendering receives the original descriptor.
+While visible, Calm retains the installed slot components and reproduces Pi's default framing or preserves an installed self-framed renderer; during stock export/share rendering each call delegates to the installed renderers, so a row Pi constructs inside that window still keeps Calm's presentation afterward.
 The registrar, call/result slots and optional padding setter are capability-probed, with the missing-capability behavior owned by [`calm.md`](calm.md#codemode-presentation-capability).
 The current empirical guard and older-surface verification are recorded in [`verification/runtime-backends.md`](verification/runtime-backends.md#pi-calm-codemode).
 
