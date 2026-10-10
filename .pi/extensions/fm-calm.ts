@@ -1,7 +1,8 @@
 /**
  * Present Firstmate's home-persistent Calm choice without changing transcript data.
- * docs/calm.md owns presentation capabilities and built-in override constraints;
- * docs/configuration.md owns the preference, and lib/fm-calm-working-ship.ts owns the boat.
+ * docs/calm.md owns presentation capabilities; docs/calm-mode-feasibility.md owns the
+ * built-in override constraints and Pi-source evidence; docs/configuration.md owns the
+ * preference, and lib/fm-calm-working-ship.ts owns the boat.
  */
 import { randomUUID } from "node:crypto";
 import {
@@ -115,6 +116,31 @@ function installCalmPresentationAdapter(name: string, install: () => void): void
   }
 }
 
+/**
+ * Reproduce Pi's default tool framing, including its configured output padding, around
+ * a row's retained slot components.
+ */
+function refreshStandardShell(
+  shell: StandardShellState,
+  theme: RenderTheme<any, any, any>,
+  context: RenderContext<any, any, any> & { outputPad?: number },
+): Box {
+  const background = context.isPartial
+    ? (text: string) => theme.bg("toolPendingBg", text)
+    : context.isError
+      ? (text: string) => theme.bg("toolErrorBg", text)
+      : (text: string) => theme.bg("toolSuccessBg", text);
+  const outputPad = context.outputPad ?? 1;
+  const box = shell.shell ?? new Box(outputPad, 1, background);
+  shell.shell = box;
+  box.setBgFn(background);
+  (box as Box & { setPaddingX?: (padding: number) => void }).setPaddingX?.(outputPad);
+  box.clear();
+  if (shell.call) box.addChild(shell.call);
+  if (shell.result) box.addChild(shell.result);
+  return box;
+}
+
 export default function (pi: ExtensionAPI) {
   installCalmPresentationAdapter("collapsed-thinking", installCalmAssistantLayout);
   installCalmPresentationAdapter("operational-user-row", installCalmOperationalUserLayout);
@@ -220,6 +246,20 @@ export default function (pi: ExtensionAPI) {
     for (const invalidate of calmToolRowRepaints.values()) invalidate();
   };
 
+  // Stock slot components each visible row retains apart from Calm's zero-height ones,
+  // keyed by the row-local state Pi hands every render slot.
+  const standardShells = new WeakMap<object, StandardShellState>();
+
+  /** Return one row's retained stock slot components, creating them on first use. */
+  function standardShellFor(rowState: object): StandardShellState {
+    let shell = standardShells.get(rowState);
+    if (!shell) {
+      shell = {};
+      standardShells.set(rowState, shell);
+    }
+    return shell;
+  }
+
   let codemodeUI: ExtensionUIContext | undefined;
   let codemodeWarningShown = false;
 
@@ -241,41 +281,8 @@ export default function (pi: ExtensionAPI) {
 
   /** Wrap only Codemode's installed renderers, preserving their components and framing. */
   function wrapCodemodePresentation(original: ToolPresentation): ToolPresentation {
-    const shells = new WeakMap<object, StandardShellState>();
     const renderCall = original.renderCall!;
     const renderResult = original.renderResult!;
-
-    /** Keep stock slot components separate from the zero-height Calm components. */
-    function shellFor(state: object): StandardShellState {
-      let shell = shells.get(state);
-      if (!shell) {
-        shell = {};
-        shells.set(state, shell);
-      }
-      return shell;
-    }
-
-    /** Reproduce Pi's default tool framing around the installed slot renderers. */
-    function refreshShell(
-      shell: StandardShellState,
-      theme: RenderTheme<any, any, any>,
-      context: RenderContext<any, any, any> & { outputPad?: number },
-    ): Box {
-      const background = context.isPartial
-        ? (text: string) => theme.bg("toolPendingBg", text)
-        : context.isError
-          ? (text: string) => theme.bg("toolErrorBg", text)
-          : (text: string) => theme.bg("toolSuccessBg", text);
-      const box = shell.shell ?? new Box(context.outputPad ?? 1, 1, background);
-      shell.shell = box;
-      box.setBgFn(background);
-      const paddedBox = box as Box & { setPaddingX?: (padding: number) => void };
-      paddedBox.setPaddingX?.(context.outputPad ?? 1);
-      box.clear();
-      if (shell.call) box.addChild(shell.call);
-      if (shell.result) box.addChild(shell.result);
-      return box;
-    }
 
     return {
       renderShell: "self",
@@ -284,19 +291,19 @@ export default function (pi: ExtensionAPI) {
         rememberCalmToolRow(context.state, context.invalidate);
         if (exportRendering) return renderCall(args, theme, context);
         if (calmPresentationHides("assistant-tool-call")) return new Container();
-        const shell = shellFor(context.state);
+        const shell = standardShellFor(context.state);
         shell.call = renderCall(args, theme, { ...context, lastComponent: shell.call });
-        return original.renderShell === "self" ? shell.call : refreshShell(shell, theme, context);
+        return original.renderShell === "self" ? shell.call : refreshStandardShell(shell, theme, context);
       },
       /** Hide nested-call summaries and output, or delegate to the installed result renderer. */
       renderResult(result, options, theme, context) {
         rememberCalmToolRow(context.state, context.invalidate);
         if (exportRendering) return renderResult(result, options, theme, context);
         if (calmPresentationHides("tool-result")) return new Container();
-        const shell = shellFor(context.state);
+        const shell = standardShellFor(context.state);
         shell.result = renderResult(result, options, theme, { ...context, lastComponent: shell.result });
         if (original.renderShell === "self") return shell.result;
-        refreshShell(shell, theme, context);
+        refreshStandardShell(shell, theme, context);
         return new Container();
       },
     };
@@ -340,42 +347,10 @@ export default function (pi: ExtensionAPI) {
     const originalRenderCall = original.renderCall;
     const originalRenderResult = original.renderResult;
     const originalSelfShell = original.renderShell === "self";
-    const standardShells = new WeakMap<object, StandardShellState>();
 
     if (!originalRenderCall || !originalRenderResult) {
       throw new Error(`Firstmate calm mode requires both render slots for Pi built-in tool ${original.name}`);
     }
-
-    const shellStateFor = (
-      context: RenderContext<TParams, TDetails, TState>,
-    ): StandardShellState => {
-      const rowState = context.state as object;
-      let shellState = standardShells.get(rowState);
-      if (!shellState) {
-        shellState = {};
-        standardShells.set(rowState, shellState);
-      }
-      return shellState;
-    };
-
-    const refreshStandardShell = (
-      state: StandardShellState,
-      theme: RenderTheme<TParams, TDetails, TState>,
-      context: RenderContext<TParams, TDetails, TState>,
-    ): Box => {
-      const background = context.isPartial
-        ? (text: string) => theme.bg("toolPendingBg", text)
-        : context.isError
-          ? (text: string) => theme.bg("toolErrorBg", text)
-          : (text: string) => theme.bg("toolSuccessBg", text);
-      const shell = state.shell ?? new Box(1, 1, background);
-      state.shell = shell;
-      shell.setBgFn(background);
-      shell.clear();
-      if (state.call) shell.addChild(state.call);
-      if (state.result) shell.addChild(state.result);
-      return shell;
-    };
 
     return {
       ...original,
@@ -395,7 +370,7 @@ export default function (pi: ExtensionAPI) {
         if (calmPresentationHides("assistant-tool-call")) return new Container();
         if (originalSelfShell) return originalRenderCall(args, theme, context);
 
-        const state = shellStateFor(context);
+        const state = standardShellFor(context.state as object);
         state.call = originalRenderCall(args, theme, {
           ...context,
           lastComponent: state.call,
@@ -414,7 +389,7 @@ export default function (pi: ExtensionAPI) {
         if (calmPresentationHides("tool-result")) return new Container();
         if (originalSelfShell) return originalRenderResult(result, options, theme, context);
 
-        const state = shellStateFor(context);
+        const state = standardShellFor(context.state as object);
         state.result = originalRenderResult(result, options, theme, {
           ...context,
           lastComponent: state.result,
