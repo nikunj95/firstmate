@@ -263,13 +263,14 @@ export default function (pi: ExtensionAPI) {
   let codemodeUI: ExtensionUIContext | undefined;
   let codemodeWarningShown = false;
 
-  /** Disclose a missing Codemode presentation capability without changing execution. */
+  /** Disclose a missing Codemode presentation capability once, through the UI when one exists, else stderr. */
   function reportCodemodeLimitation(reason: string): void {
     if (codemodeWarningShown || !calmPresentationIsActive()) return;
     codemodeWarningShown = true;
     const message = `Firstmate Calm: Codemode transcript remains visible because ${reason}. Tool execution is unchanged.`;
-    console.error(message);
-    codemodeUI?.notify(message, "warning");
+    // Raw stderr would draw over the live TUI and linger as a stray transcript line.
+    if (codemodeUI) codemodeUI.notify(message, "warning");
+    else console.error(message);
   }
 
   /** Warn only when Codemode exists on a Pi surface without renderer registration. */
@@ -503,7 +504,7 @@ export default function (pi: ExtensionAPI) {
     exportRendering = false;
     setCalmPresentation(loadCalmPreference());
     setCalmStockExportRendering(false);
-    codemodeUI = ctx.ui;
+    codemodeUI = ctx.hasUI ? ctx.ui : undefined;
     reportMissingCodemodeRegistrar();
     publishPresentationState();
     agentRunActive = false;

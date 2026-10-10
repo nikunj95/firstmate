@@ -16,7 +16,7 @@ setCapabilities({ images: null, trueColor: true, hyperlinks: false });
 function ignoreNotification() {}
 
 /** Capture only supported extension registrations and presentation lifecycle effects. */
-function registerCalm(supported = true) {
+function registerCalm(supported = true, hasUI = true) {
   const handlers = new Map();
   const tools = [];
   const warnings = [];
@@ -61,7 +61,7 @@ function registerCalm(supported = true) {
     notify(message) { warnings.push(message); },
   };
   extension.default(pi);
-  handlers.get("session_start")({}, { ui });
+  handlers.get("session_start")({}, { ui, hasUI });
   return { resolver, tools, warnings, command, ui,
     /** Exercise the same submit hook exports and shares use, without publication. */
     submit(text) {
@@ -189,9 +189,12 @@ try {
   assert.equal(startedOff.warnings.length, 0, "Calm off disclosed an inactive limitation");
   await startedOff.command.handler("", { ui: startedOff.ui });
   assert.equal(startedOff.warnings.length, 1, "first activation did not disclose the missing API");
+  assert.deepEqual(diagnostics, [], "a TUI capability warning was duplicated as raw stderr");
+  registerCalm(false, false);
+  assert.equal(diagnostics.length, 1, "a session without UI lost its capability disclosure");
+  assert.match(diagnostics[0], /pi.registerToolRenderer\(\) is unavailable/);
 } finally {
   console.error = originalError;
 }
-assert.equal(diagnostics.length, 4);
 assert.equal(readFileSync(`${process.env.FM_HOME}/config/calm`, "utf8"), "on\n");
 console.log("ok - Codemode renderer capability probes, zero-height calls/results, stock framing and expansion, downstream renderers, unrelated tools and immutable results");
