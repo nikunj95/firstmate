@@ -116,7 +116,8 @@ These rows remain visible:
 - Generic status notices.
 - Other arbitrary custom-tool or extension rows.
 
-Custom-tool and extension rows remain outside Calm's owned coverage; the other rows are supported-API boundaries rather than hidden-content failures.
+Other arbitrary custom-tool and extension rows remain outside Calm's owned coverage; Codemode and the Firstmate-owned tool shells stay covered as listed in [What Calm hides on Pi](#what-calm-hides-on-pi).
+The other listed rows are supported-API boundaries rather than hidden-content failures.
 
 ## Pi compatibility
 
