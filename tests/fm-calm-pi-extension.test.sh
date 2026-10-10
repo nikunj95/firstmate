@@ -35,11 +35,13 @@ record_pi_version_evidence() {
 . "$ROOT/tests/assets/fm-calm-codemode.sh"
 
 cleanup() {
-  cleanup_codemode_e2e || exit 1
+  local codemode_status=0
+  cleanup_codemode_e2e || codemode_status=1
   if command -v tmux >/dev/null 2>&1; then
     tmux -L "$TMUX_SOCKET" kill-server 2>/dev/null || true
   fi
   fm_test_cleanup
+  [ "$codemode_status" -eq 0 ] || exit 1
 }
 trap cleanup EXIT
 
@@ -1226,7 +1228,7 @@ extension.default(pi);
 const visibility = await import(`${pathToFileURL(`${process.cwd()}/lib/fm-calm-visibility.ts`).href}?policy=${Date.now()}`);
 const operationalInput = await import(`${pathToFileURL(`${process.cwd()}/lib/fm-operational-input.ts`).href}?input=${Date.now()}`);
 
-// Registration is gated on config/calm at load (see fm-calm.ts's file header); this
+// Registration is gated on config/calm at load (see docs/calm-mode-feasibility.md); this
 // fixture has no config/calm file, so nothing is registered yet. Every render-
 // equivalence assertion below needs the wrapped definitions the way a user who kept
 // Calm on across a previous session would already have them, so force that here via
@@ -4331,7 +4333,7 @@ JSON
   # initial session restore, before Calm's first-ever activation in this session had
   # claimed any built-in name; they keep their stock presentation for the rest of the
   # session. This is the captain-accepted, documented bound on the collision fix (see
-  # fm-calm.ts's file header and docs/calm.md): the alternative was letting Calm
+  # docs/calm-mode-feasibility.md and docs/calm.md): the alternative was letting Calm
   # silently disable a differently loaded extension's own bash/read/etc override. A
   # fresh built-in tool call made after this same activation does hide correctly;
   # that path is covered by this file's own test_calm_activation_collision_and

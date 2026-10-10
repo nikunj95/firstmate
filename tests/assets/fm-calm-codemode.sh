@@ -184,7 +184,8 @@ test_codemode_terminal_e2e() {
   codemode_exit
   sleep 1
   if [ -n "${CODEMODE_TMUX_DIR:-}" ]; then
-    TMUX_TMPDIR="$CODEMODE_TMUX_DIR" tmux -L codemode new-window -t codemode -n restored "$launch --session '$session_file'"
+    TMUX_TMPDIR="$CODEMODE_TMUX_DIR" tmux -L codemode kill-session -t codemode 2>/dev/null || true
+    TMUX_TMPDIR="$CODEMODE_TMUX_DIR" tmux -L codemode new-session -d -s codemode -x 120 -y 44 "$launch --session '$session_file'"
   else
     workspace=$("$CODEMODE_HERDR_HELPER" run "$CODEMODE_HERDR_SESSION" workspace create --cwd "$fixture" --env "HOME=$fixture" --env "ZDOTDIR=$fixture" --no-focus)
     CODEMODE_PANE=$(printf '%s' "$workspace" | jq -r '.result.root_pane.pane_id')

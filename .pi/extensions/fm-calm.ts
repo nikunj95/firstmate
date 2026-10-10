@@ -444,17 +444,19 @@ export default function (pi: ExtensionAPI) {
   let builtInsRegistered = false;
 
   // Gate on Calm already being on at load time. This must stay synchronous and
-  // unconditional here (see file header): a foreign-claim check is not reachable at
-  // this point, while deferral would make restored rows capture the wrong definition.
-  // A Calm-off session or reload registers nothing and creates no collision exposure.
+  // unconditional here (see docs/calm-mode-feasibility.md): a foreign-claim check is
+  // not reachable at this point, while deferral would make restored rows capture the
+  // wrong definition. A Calm-off session or reload registers nothing and creates no
+  // collision exposure.
   if (loadCalmPreference()) {
     for (const tool of wrappedBuiltIns) pi.registerTool(tool);
     builtInsRegistered = true;
   }
 
   // Which of the 7 built-ins are currently owned by a different, non-builtin
-  // extension. Only safe to call once every extension has finished loading (see file
-  // header); never call this during the factory's own synchronous execution above.
+  // extension. Only safe to call once every extension has finished loading (see
+  // docs/calm-mode-feasibility.md); never call this during the factory's own synchronous
+  // execution above.
   function contestedBuiltIns(): ToolDefinition<any, any, any>[] {
     let registered: ToolInfo[];
     try {
