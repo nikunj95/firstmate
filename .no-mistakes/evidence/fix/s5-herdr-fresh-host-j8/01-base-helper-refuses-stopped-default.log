@@ -1,0 +1,14 @@
+### Isolated Herdr namespace: XDG_CONFIG_HOME=/tmp/fmh.dCvMze/c (herdr herdr 0.9.3)
+$ herdr session list --json
+{"sessions":[{"default":true,"name":"default","running":false,"session_dir":"/tmp/fmh.dCvMze/c/herdr","socket_path":"/tmp/fmh.dCvMze/c/herdr/herdr.sock"}]}
+
+### BASE helper (4735ddc) prepare against the stopped default
+$ fm-herdr-lab.sh(base) prepare fm-lab-base-repro-81013-31447
+fm-herdr-lab: fleet-state tripwire requires exactly one running default session
+exit=1
+$ fm-herdr-lab.sh(base) provision fm-lab-base-repro-81013-31447
+fm-herdr-lab: fleet-state tripwire requires exactly one running default session
+exit=1
+tripwire files in base state dir: 0
+$ herdr session list --json (after)
+{"sessions":[{"default":true,"name":"default","running":false,"session_dir":"/tmp/fmh.dCvMze/c/herdr","socket_path":"/tmp/fmh.dCvMze/c/herdr/herdr.sock"}]}

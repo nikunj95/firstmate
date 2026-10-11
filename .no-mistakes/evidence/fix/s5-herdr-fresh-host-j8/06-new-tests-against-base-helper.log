@@ -1,0 +1,4 @@
+ok - fm-herdr-lab: names fail closed and require the lab prefix
+ok - fm-herdr-lab: provisioning, scoped calls, guarded teardown, and fleet tripwire are deterministic
+fm-herdr-lab: fleet-state tripwire requires exactly one running default session
+not ok - stopped default refused provision

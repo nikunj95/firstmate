@@ -1,0 +1,32 @@
+
+$ [namespace A] fm-herdr-lab.sh provision fm-lab-changed-default-86110-10011
+exit=0
+
+$ [namespace A] fm-herdr-lab.sh stop fm-lab-changed-default-86110-10011
+exit=0
+
+$ cat tripwire   # recorded stopped baseline
+{"name":"default","default":true,"running":false,"socket_path":"/tmp/fmh.dCvMze/c/herdr/herdr.sock","session_dir":"/tmp/fmh.dCvMze/c/herdr"}
+
+$ [namespace B] herdr session list --json   # default now reports different paths
+{"sessions":[{"default":true,"name":"default","running":false,"session_dir":"/tmp/fmh.dCvMze/c2/herdr","socket_path":"/tmp/fmh.dCvMze/c2/herdr/herdr.sock"}]}
+
+$ [namespace B] fm-herdr-lab.sh provision fm-lab-changed-default-86110-10011   # restart under a changed default
+fm-herdr-lab: tripwire already exists for 'fm-lab-changed-default-86110-10011'; refusing ambiguous ownership
+exit=1
+
+$ [namespace B] fm-herdr-lab.sh teardown fm-lab-changed-default-86110-10011   # cleanup under a changed default
+fm-herdr-lab: FLEET-STATE TRIPWIRE FAILED: default session changed during lab work
+fm-herdr-lab: before: {"name":"default","default":true,"running":false,"socket_path":"/tmp/fmh.dCvMze/c/herdr/herdr.sock","session_dir":"/tmp/fmh.dCvMze/c/herdr"}
+fm-herdr-lab: after:  {"name":"default","default":true,"running":false,"socket_path":"/tmp/fmh.dCvMze/c2/herdr/herdr.sock","session_dir":"/tmp/fmh.dCvMze/c2/herdr"}
+exit=1
+tripwire retained after refused cleanup: yes
+namespace B default socket present: no
+
+$ [namespace A] fm-herdr-lab.sh teardown fm-lab-changed-default-86110-10011   # recorded baseline restored
+exit=0
+tripwire retained after verified cleanup: no
+
+$ [namespace A] herdr session list --json
+{"sessions":[{"default":true,"name":"default","running":false,"session_dir":"/tmp/fmh.dCvMze/c/herdr","socket_path":"/tmp/fmh.dCvMze/c/herdr/herdr.sock"}]}
+namespace A default socket present: no

@@ -1,0 +1,25 @@
+
+$ default entry before
+{"default":true,"name":"default","running":true,"session_dir":"~/.config/herdr","socket_path":"~/.config/herdr/herdr.sock"}
+
+$ fm-herdr-lab.sh provision fm-lab-running-default-87134-22829
+exit=0
+
+$ cat tripwire
+{"name":"default","default":true,"running":true,"socket_path":"~/.config/herdr/herdr.sock","session_dir":"~/.config/herdr"}
+
+$ lab entry while provisioned
+{"name":"fm-lab-running-default-87134-22829","default":false,"running":true}
+
+$ fm-herdr-lab.sh run fm-lab-running-default-87134-22829 workspace list
+{"type":"workspace_list","count":0}
+exit=0
+
+$ fm-herdr-lab.sh teardown fm-lab-running-default-87134-22829
+exit=0
+
+$ default entry after
+{"default":true,"name":"default","running":true,"session_dir":"~/.config/herdr","socket_path":"~/.config/herdr/herdr.sock"}
+lab session remaining: 0
+tripwire retained: no
+RESULT: running default entry identical before/after

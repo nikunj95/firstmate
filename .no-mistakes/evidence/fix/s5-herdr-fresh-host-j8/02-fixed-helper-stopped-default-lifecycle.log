@@ -1,0 +1,44 @@
+### Fixed helper at d8cbdb1c6208127417d45c95a753e0ef3e49b71a sha256 745f7f6bd50a1b5c27066688095069e5982d283adac560c12ba515de76e0d0d2
+
+$ herdr session list --json   # baseline
+{"sessions":[{"default":true,"name":"default","running":false,"session_dir":"/tmp/fmh.dCvMze/c/herdr","socket_path":"/tmp/fmh.dCvMze/c/herdr/herdr.sock"}]}
+default socket present before: no
+
+$ fm-herdr-lab.sh provision fm-lab-stopped-default-82733-19578
+exit=0
+
+$ cat tripwire
+{"name":"default","default":true,"running":false,"socket_path":"/tmp/fmh.dCvMze/c/herdr/herdr.sock","session_dir":"/tmp/fmh.dCvMze/c/herdr"}
+
+$ herdr session list --json   # after provision
+{"sessions":[{"default":true,"name":"default","running":false,"session_dir":"/tmp/fmh.dCvMze/c/herdr","socket_path":"/tmp/fmh.dCvMze/c/herdr/herdr.sock"},{"default":false,"name":"fm-lab-stopped-default-82733-19578","running":true,"session_dir":"/tmp/fmh.dCvMze/c/herdr/sessions/fm-lab-stopped-default-82733-19578","socket_path":"/tmp/fmh.dCvMze/c/herdr/sessions/fm-lab-stopped-default-82733-19578/herdr.sock"}]}
+default socket present while lab runs: no
+
+$ fm-herdr-lab.sh run fm-lab-stopped-default-82733-19578 workspace create --label fm-lab-proof --cwd /tmp/fmh.dCvMze --no-focus
+exit=0
+{"id":"cli:workspace:create","result":{"root_pane":{"agent_status":"unknown","cwd":"/private/tmp/fmh.dCvMze","focused":true,"foreground_cwd":"/private/tmp/fmh.dCvMze","pane_id":"w1:p1","revision":0,"scroll":{"max_offset_from_bottom":0,"offset_from_bottom":0,"viewport_rows":40},"tab_id":"w1:t1","terminal_id":"term_65d87a58eb4051","workspace_id":"w1"},"tab":{"agent_status":"unknown","focused":true,"label":"1","number":1,"pane_count":1,"tab_id":"w1:t1","workspace_id":"w1"},"type":"workspace_created","workspace":{"active_tab_id":"w1:t1","agent_status":"unknown","focused":true,"label":"fm-lab-proof","number":1,"pane_count":1,"tab_count":1,"workspace_id":"w1"}}}
+workspace_id=w1
+
+$ fm-herdr-lab.sh stop fm-lab-stopped-default-82733-19578
+{"session":{"default":false,"name":"fm-lab-stopped-default-82733-19578","running":false,"session_dir":"/tmp/fmh.dCvMze/c/herdr/sessions/fm-lab-stopped-default-82733-19578","socket_path":"/tmp/fmh.dCvMze/c/herdr/sessions/fm-lab-stopped-default-82733-19578/herdr.sock"},"stopped":true}
+exit=0
+
+$ herdr session list --json   # after guarded stop
+{"sessions":[{"default":true,"name":"default","running":false,"session_dir":"/tmp/fmh.dCvMze/c/herdr","socket_path":"/tmp/fmh.dCvMze/c/herdr/herdr.sock"},{"default":false,"name":"fm-lab-stopped-default-82733-19578","running":false,"session_dir":"/tmp/fmh.dCvMze/c/herdr/sessions/fm-lab-stopped-default-82733-19578","socket_path":"/tmp/fmh.dCvMze/c/herdr/sessions/fm-lab-stopped-default-82733-19578/herdr.sock"}]}
+
+$ fm-herdr-lab.sh provision fm-lab-stopped-default-82733-19578   # guarded restart of the stopped named lab
+exit=0
+
+$ fm-herdr-lab.sh run fm-lab-stopped-default-82733-19578 workspace list
+{"id":"cli:workspace:list","result":{"type":"workspace_list","workspaces":[{"active_tab_id":"w1:t1","agent_status":"unknown","focused":true,"label":"fm-lab-proof","number":1,"pane_count":1,"tab_count":1,"workspace_id":"w1"}]}}
+exit=0
+
+$ fm-herdr-lab.sh teardown fm-lab-stopped-default-82733-19578
+exit=0
+
+$ herdr session list --json   # after teardown
+{"sessions":[{"default":true,"name":"default","running":false,"session_dir":"/tmp/fmh.dCvMze/c/herdr","socket_path":"/tmp/fmh.dCvMze/c/herdr/herdr.sock"}]}
+tripwire retained after teardown: no
+default socket present after: no
+named session dir present after: no
+RESULT: session list byte-identical before/after; default stayed stopped
