@@ -1,0 +1,18 @@
+19:41:57 provisioned Herdr lab session fm-lab-calm-codemode-61723-18247
+19:41:59 stock baseline captured
+ok - /Users/nikunjkotecha/.no-mistakes/evidence/01M4M7NNF4YEM5TECNVZ0CXH4K/live/calm-on-live.txt is hidden-gapless
+19:42:02 autocompleted /export wrote pi-session-2026-10-11T02-41-59-933Z_01a128d6-ac7c-7339-81d8-0db00a318111.html
+19:42:04 calm-on-typed-share: submitted=1791686522.470 lock_released=1791686524.276 gh_calls=1791686524.667[auth status] 1791686524.685[gist create]  shares=1
+ok - /Users/nikunjkotecha/.no-mistakes/evidence/01M4M7NNF4YEM5TECNVZ0CXH4K/live/calm-on-typed-share-during-held-share.txt is hidden-gapless
+ok - /Users/nikunjkotecha/.no-mistakes/evidence/01M4M7NNF4YEM5TECNVZ0CXH4K/live/calm-on-typed-share-after-share.txt is hidden-gapless
+19:42:07 calm-off-autocomplete-share: submitted=1791686525.863 lock_released=1791686527.555 gh_calls=1791686527.634[auth status] 1791686527.648[gist create]  shares=2
+19:42:08 calm-on session file unchanged across expansion, toggles, 3 exports and 2 shares
+19:42:15 Calm-off live viewport is byte-identical (ANSI colors included) to the no-Calm viewport apart from nested-call durations and fixture path
+stock reference stock.export.html: Codemode rows code-one, code-two
+calm-on-autocomplete.export.html: Codemode call/collapsed/expanded HTML equals stock apart from measured nested-call durations; message content equals stock
+calm-on-typed.export.html: Codemode rendering equals stock; every pre-rendered tool is byte-identical to calm-on-autocomplete.export.html (same session)
+calm-on-typed-share.share.html: Codemode rendering equals stock; every pre-rendered tool is byte-identical to calm-on-autocomplete.export.html (same session)
+calm-off-autocomplete-share.share.html: Codemode rendering equals stock; every pre-rendered tool is byte-identical to calm-on-autocomplete.export.html (same session)
+calm-off-typed.export.html: Codemode rendering equals stock; every pre-rendered tool is byte-identical to calm-on-autocomplete.export.html (same session)
+calm-off-start.export.html: Codemode call/collapsed/expanded HTML equals stock apart from measured nested-call durations; message content equals stock
+19:42:31 all live scenarios passed

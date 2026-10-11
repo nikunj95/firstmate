@@ -1,0 +1,7 @@
+stock reference stock.export.html: Codemode rows code-one, code-two
+calm-on-autocomplete.export.html: Codemode call/collapsed/expanded HTML equals stock apart from measured nested-call durations; message content equals stock
+calm-on-typed.export.html: Codemode rendering equals stock; every pre-rendered tool is byte-identical to calm-on-autocomplete.export.html (same session)
+calm-on-typed-share.share.html: Codemode rendering equals stock; every pre-rendered tool is byte-identical to calm-on-autocomplete.export.html (same session)
+calm-off-autocomplete-share.share.html: Codemode rendering equals stock; every pre-rendered tool is byte-identical to calm-on-autocomplete.export.html (same session)
+calm-off-typed.export.html: Codemode rendering equals stock; every pre-rendered tool is byte-identical to calm-on-autocomplete.export.html (same session)
+calm-off-start.export.html: Codemode call/collapsed/expanded HTML equals stock apart from measured nested-call durations; message content equals stock

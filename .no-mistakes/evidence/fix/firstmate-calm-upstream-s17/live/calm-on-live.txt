@@ -1,0 +1,40 @@
+                                                                                                                        
+ GENUINE_BASELINE                                                                                                       
+                                                                                                                        
+
+ BASELINE_FINAL                                                                                                         
+
+                                                                                                                        
+ GENUINE_CODEMODE                                                                                                       
+                                                                                                                        
+
+ AFTER_CODEMODE                                                                                                         
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                                        
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+/private/var/folders/jb/kn_3k37s6xz3411rh2kkdnjm0000gn/T/fm-calm-live.12Ka1g/calm-on
+↑1.5k ↓79 $0.000 1.6%/100k                                                                                 deterministic
+CODEMODE_TEST_READY CODEMODE_RENDERER_AVAILABLE
