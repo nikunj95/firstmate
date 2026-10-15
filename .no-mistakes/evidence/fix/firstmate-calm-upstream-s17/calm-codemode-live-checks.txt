@@ -1,0 +1,44 @@
+## Calm-off TUI rows vs stock Pi (no Calm), aligned on the final reply, ANSI included
+identical ANSI rows: 31 (including 21 Codemode script/summary/output rows) aligned on the final reply
+
+## Calm-on gapless hiding (live viewport) at each step
+hidden               ok - no Codemode script/nested/output text; user->final spacing 3 rows equals no-tool baseline 3
+hidden-expanded      ok - no Codemode script/nested/output text; user->final spacing 3 rows equals no-tool baseline 3
+rehidden             ok - no Codemode script/nested/output text; user->final spacing 3 rows equals no-tool baseline 3
+export-on            ok - no Codemode script/nested/output text; user->final spacing 3 rows equals no-tool baseline 3
+export-autocomplete  ok - no Codemode script/nested/output text; user->final spacing 3 rows equals no-tool baseline 3
+share-on             ok - no Codemode script/nested/output text; user->final spacing 3 rows equals no-tool baseline 3
+share-autocomplete   ok - no Codemode script/nested/output text; user->final spacing 3 rows equals no-tool baseline 3
+restored             ok - no Codemode script/nested/output text; user->final spacing 3 rows equals no-tool baseline 3
+
+## Exported/shared HTML (Pi 1.1.0, this change) vs stock Pi export; shares ran after an auth.json change forced Pi's async auth reload
+ok - stock-pi-share: Codemode callHtml(807B, has script) + resultHtml collapsed/expanded identical to stock Pi for code-one, code-two; session messages identical
+ok - calm-off-export: Codemode callHtml(807B, has script) + resultHtml collapsed/expanded identical to stock Pi for code-one, code-two; session messages identical
+ok - calm-off-share-after-auth-reload: Codemode callHtml(807B, has script) + resultHtml collapsed/expanded identical to stock Pi for code-one, code-two; session messages identical
+ok - calm-on-export: Codemode callHtml(807B, has script) + resultHtml collapsed/expanded identical to stock Pi for code-one, code-two; session messages identical
+ok - calm-on-autocompleted-/exp: Codemode callHtml(807B, has script) + resultHtml collapsed/expanded identical to stock Pi for code-one, code-two; session messages identical
+ok - calm-on-share-after-auth-reload: Codemode callHtml(807B, has script) + resultHtml collapsed/expanded identical to stock Pi for code-one, code-two; session messages identical
+ok - calm-on-autocompleted-/sha-after-auth-reload: Codemode callHtml(807B, has script) + resultHtml collapsed/expanded identical to stock Pi for code-one, code-two; session messages identical
+
+## Same delayed Calm-off /share against the previous commit ea85cef (one-macrotask export window), 3 attempts
+ea85cef-calm-off-share-0: code-one rendered HTML differs from stock Pi
+ea85cef-calm-off-share-1: code-one rendered HTML differs from stock Pi
+ea85cef-calm-off-share-2: code-one rendered HTML differs from stock Pi
+  callHtml             stock: 807B | this change: 807B | ea85cef: 1968B
+  resultHtmlCollapsed  stock: 1793B | this change: 1793B | ea85cef: 0B
+  resultHtmlExpanded   stock: 2244B | this change: 2244B | ea85cef: 0B
+
+## Execution, nested calls, provider context, usage/cost (fm-calm-codemode-content.mjs on the live session)
+ok - repeated real Codemode calls preserve parent/child events, original output, model context, nested usage, session data and stock HTML export
+
+## Persisted session unchanged by toggles, Ctrl+O, exports, shares, restart
+ok - session JSONL byte-identical to the copy taken right after the Codemode turn
+
+## Calm-on execution vs a stock Pi (no Calm) run of the same /calm-codemode-test turn
+ok - Calm-on session (11 messages) matches the stock-Pi run in roles, tool results, nested calls, usage/cost and stop reasons; model requests 5 vs 5
+
+## Private Pi 0.99.0 (no pi.registerToolRenderer), Calm on
+startup warning lines: 1
+ok - 2 codemode results executed (nested read:ok,fm_branch_outcomes:ok | read:ok,fm_branch_outcomes:ok), usage {"input":11,"output":2,"totalTokens":13,"cost":{"total":0.0002}}; export callHtml has script: true, result has output: true
+Codemode visible in TUI: 2
+built-in read of ordinary.txt visible: 0
