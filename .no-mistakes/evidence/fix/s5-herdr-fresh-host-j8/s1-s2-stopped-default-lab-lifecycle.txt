@@ -1,0 +1,43 @@
+== isolated namespace: HOME=/tmp/fmh.7hRR (fresh host, default never started)
+== herdr herdr 0.9.3
+default before: {"default":true,"name":"default","running":false,"session_dir":"/tmp/fmh.7hRR/.config/herdr","socket_path":"/tmp/fmh.7hRR/.config/herdr/herdr.sock"}
+
+######## BEFORE FIX (base fc8972c helper) ########
+
+$ /tmp/fmhs.keeu/base/bin/fm-herdr-lab.sh provision fm-lab-fresh-host-base-86501-27713
+fm-herdr-lab: fleet-state tripwire requires exactly one running default session
+[exit 1]
+tripwire present? no
+lab session exists? 0
+
+######## AFTER FIX (target 0cb7a81 helper) ########
+lab session: fm-lab-fresh-host-86609-11242
+
+$ /Users/nikunjkotecha/.no-mistakes/worktrees/2ee2211c408e/01M50FCWW1A8RDTS8KVYQZJK3T/bin/fm-herdr-lab.sh provision fm-lab-fresh-host-86609-11242
+[exit 0]
+tripwire: {"name":"default","default":true,"running":false,"socket_path":"/tmp/fmh.7hRR/.config/herdr/herdr.sock"}
+sessions while lab runs:
+{"name":"default","default":true,"running":false}
+{"name":"fm-lab-fresh-host-86609-11242","default":false,"running":true}
+
+$ /Users/nikunjkotecha/.no-mistakes/worktrees/2ee2211c408e/01M50FCWW1A8RDTS8KVYQZJK3T/bin/fm-herdr-lab.sh run fm-lab-fresh-host-86609-11242 workspace create --cwd /tmp --label fm-lab-probe-ws
+{"id":"cli:workspace:create","result":{"root_pane":{"agent_status":"unknown","cwd":"/private/tmp","focused":true,"foreground_cwd":"/private/tmp","pane_id":"w1:p1","revision":0,"scroll":{"max_offset_from_bottom":0,"offset_from_bottom":0,"viewport_rows":40},"tab_id":"w1:t1","terminal_id":"term_65de5fc03bbd71","workspace_id":"w1"},"tab":{"agent_status":"unknown","focused":true,"label":"1","number":1,"pane_count":1,"tab_id":"w1:t1","workspace_id":"w1"},"type":"workspace_created","workspace":{"active_tab_id":"w1:t1","agent_status":"unknown","focused":true,"label":"fm-lab-probe-ws","number":1,"pane_count":1,"tab_count":1,"workspace_id":"w1"}}}
+[exit 0]
+
+$ /Users/nikunjkotecha/.no-mistakes/worktrees/2ee2211c408e/01M50FCWW1A8RDTS8KVYQZJK3T/bin/fm-herdr-lab.sh run fm-lab-fresh-host-86609-11242 workspace list
+{"id":"cli:workspace:list","result":{"type":"workspace_list","workspaces":[{"active_tab_id":"w1:t1","agent_status":"unknown","focused":true,"label":"fm-lab-probe-ws","number":1,"pane_count":1,"tab_count":1,"workspace_id":"w1"}]}}
+[exit 0]
+
+$ /Users/nikunjkotecha/.no-mistakes/worktrees/2ee2211c408e/01M50FCWW1A8RDTS8KVYQZJK3T/bin/fm-herdr-lab.sh stop fm-lab-fresh-host-86609-11242
+{"session":{"default":false,"name":"fm-lab-fresh-host-86609-11242","running":false,"session_dir":"/tmp/fmh.7hRR/.config/herdr/sessions/fm-lab-fresh-host-86609-11242","socket_path":"/tmp/fmh.7hRR/.config/herdr/sessions/fm-lab-fresh-host-86609-11242/herdr.sock"},"stopped":true}
+[exit 0]
+default after guarded stop: {"default":true,"name":"default","running":false,"session_dir":"/tmp/fmh.7hRR/.config/herdr","socket_path":"/tmp/fmh.7hRR/.config/herdr/herdr.sock"}
+
+$ /Users/nikunjkotecha/.no-mistakes/worktrees/2ee2211c408e/01M50FCWW1A8RDTS8KVYQZJK3T/bin/fm-herdr-lab.sh provision fm-lab-fresh-host-86609-11242
+[exit 0]
+
+$ /Users/nikunjkotecha/.no-mistakes/worktrees/2ee2211c408e/01M50FCWW1A8RDTS8KVYQZJK3T/bin/fm-herdr-lab.sh teardown fm-lab-fresh-host-86609-11242
+[exit 0]
+tripwire retained? no
+lab session remains? 0
+default after teardown: {"default":true,"name":"default","running":false,"session_dir":"/tmp/fmh.7hRR/.config/herdr","socket_path":"/tmp/fmh.7hRR/.config/herdr/herdr.sock"}

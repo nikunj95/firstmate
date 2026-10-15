@@ -1,0 +1,6 @@
+== BEFORE FIX: base fc8972c tests/fm-backend-herdr-smoke.test.sh, HOME=/tmp/fmh.7hRR (default stopped)
+fm-herdr-lab: fleet-state tripwire requires exactly one running default session
+not ok - could not prepare isolated Herdr lab session
+fm-herdr-lab: missing fleet-state tripwire for 'fm-lab-backend-smoke-93036'; refusing destructive calls
+fm-herdr-lab: missing fleet-state tripwire for 'fm-lab-backend-smoke-93036'; refusing destructive calls
+[exit 1]

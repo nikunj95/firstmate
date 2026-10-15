@@ -1,0 +1,61 @@
+default before: {"name":"default","default":true,"running":false}
+
+$ bin/fm-herdr-lab.sh provision default
+fm-herdr-lab: refusing session name 'default'
+[exit 1]
+
+$ bin/fm-herdr-lab.sh prepare default
+fm-herdr-lab: refusing session name 'default'
+[exit 1]
+
+$ bin/fm-herdr-lab.sh stop default
+fm-herdr-lab: refusing session name 'default'
+[exit 1]
+
+$ bin/fm-herdr-lab.sh teardown default
+fm-herdr-lab: refusing session name 'default'
+[exit 1]
+
+$ bin/fm-herdr-lab.sh viewer start default
+fm-herdr-lab: refusing session name 'default'
+[exit 1]
+
+$ bin/fm-herdr-lab.sh run default workspace list
+fm-herdr-lab: refusing session name 'default'
+[exit 1]
+
+$ bin/fm-herdr-lab.sh run fm-lab-guard workspace list --session default
+fm-herdr-lab: run forbids caller-supplied --session; the helper supplies the lab session
+[exit 1]
+
+$ bin/fm-herdr-lab.sh run fm-lab-guard --session default server
+fm-herdr-lab: run forbids a leading option before the Herdr subcommand; it could shift a server or session lifecycle operation past the guard or subvert session isolation
+[exit 1]
+
+$ bin/fm-herdr-lab.sh run fm-lab-guard server
+fm-herdr-lab: run forbids server operations; use provision for the named lab server
+[exit 1]
+
+$ bin/fm-herdr-lab.sh run fm-lab-guard server stop
+fm-herdr-lab: run forbids server operations; use provision for the named lab server
+[exit 1]
+
+$ bin/fm-herdr-lab.sh run fm-lab-guard session stop default
+fm-herdr-lab: run forbids session lifecycle operations; use guarded teardown
+[exit 1]
+
+$ bin/fm-herdr-lab.sh run fm-lab-guard session delete default
+fm-herdr-lab: run forbids session lifecycle operations; use guarded teardown
+[exit 1]
+
+$ bin/fm-herdr-lab.sh stop fm-lab-never-provisioned
+fm-herdr-lab: missing fleet-state tripwire for 'fm-lab-never-provisioned'; refusing stop
+[exit 1]
+
+$ bin/fm-herdr-lab.sh teardown fm-lab-never-provisioned
+fm-herdr-lab: missing fleet-state tripwire for 'fm-lab-never-provisioned'; refusing destructive calls
+[exit 1]
+
+default after: {"name":"default","default":true,"running":false}
+sessions: ["default"]
+tripwires created: 0

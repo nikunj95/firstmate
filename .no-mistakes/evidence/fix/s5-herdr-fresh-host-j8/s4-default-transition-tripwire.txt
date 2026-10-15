@@ -1,0 +1,58 @@
+== disposable namespace HOME=/tmp/fmh.ssZd; only its own default is flipped, never the host default
+default: {"name":"default","default":true,"running":false,"socket_path":"/tmp/fmh.ssZd/.config/herdr/herdr.sock"}
+
+######## A. stopped baseline, default starts during lab work ########
+
+$ /Users/nikunjkotecha/.no-mistakes/worktrees/2ee2211c408e/01M50FCWW1A8RDTS8KVYQZJK3T/bin/fm-herdr-lab.sh provision fm-lab-stopped-flip-9516-6796
+[exit 0]
+tripwire: {"name":"default","default":true,"running":false,"socket_path":"/tmp/fmh.ssZd/.config/herdr/herdr.sock"}
+
+$ /Users/nikunjkotecha/.no-mistakes/worktrees/2ee2211c408e/01M50FCWW1A8RDTS8KVYQZJK3T/bin/fm-herdr-lab.sh stop fm-lab-stopped-flip-9516-6796
+{"session":{"default":false,"name":"fm-lab-stopped-flip-9516-6796","running":false,"session_dir":"/tmp/fmh.ssZd/.config/herdr/sessions/fm-lab-stopped-flip-9516-6796","socket_path":"/tmp/fmh.ssZd/.config/herdr/sessions/fm-lab-stopped-flip-9516-6796/herdr.sock"},"stopped":true}
+[exit 0]
+fixture default started in /tmp/fmh.ssZd (pid 9769)
+default now: {"name":"default","default":true,"running":true,"socket_path":"/tmp/fmh.ssZd/.config/herdr/herdr.sock"}
+
+$ /Users/nikunjkotecha/.no-mistakes/worktrees/2ee2211c408e/01M50FCWW1A8RDTS8KVYQZJK3T/bin/fm-herdr-lab.sh provision fm-lab-stopped-flip-9516-6796
+fm-herdr-lab: FLEET-STATE TRIPWIRE FAILED: default session changed during lab work
+fm-herdr-lab: before: {"name":"default","default":true,"running":false,"socket_path":"/tmp/fmh.ssZd/.config/herdr/herdr.sock"}
+fm-herdr-lab: after:  {"name":"default","default":true,"running":true,"socket_path":"/tmp/fmh.ssZd/.config/herdr/herdr.sock"}
+[exit 1]
+lab after refused restart: [{"name":"fm-lab-stopped-flip-9516-6796","running":false}]
+
+$ /Users/nikunjkotecha/.no-mistakes/worktrees/2ee2211c408e/01M50FCWW1A8RDTS8KVYQZJK3T/bin/fm-herdr-lab.sh teardown fm-lab-stopped-flip-9516-6796
+fm-herdr-lab: FLEET-STATE TRIPWIRE FAILED: default session changed during lab work
+fm-herdr-lab: before: {"name":"default","default":true,"running":false,"socket_path":"/tmp/fmh.ssZd/.config/herdr/herdr.sock"}
+fm-herdr-lab: after:  {"name":"default","default":true,"running":true,"socket_path":"/tmp/fmh.ssZd/.config/herdr/herdr.sock"}
+[exit 1]
+tripwire retained as evidence? yes
+fixture default pid 9769 ended
+default restored: {"name":"default","default":true,"running":false,"socket_path":"/tmp/fmh.ssZd/.config/herdr/herdr.sock"}
+
+$ /Users/nikunjkotecha/.no-mistakes/worktrees/2ee2211c408e/01M50FCWW1A8RDTS8KVYQZJK3T/bin/fm-herdr-lab.sh teardown fm-lab-stopped-flip-9516-6796
+[exit 0]
+tripwire retained? no; lab: []
+
+######## B. running baseline, default stops during lab work ########
+fixture default started in /tmp/fmh.ssZd (pid 10498)
+
+$ /Users/nikunjkotecha/.no-mistakes/worktrees/2ee2211c408e/01M50FCWW1A8RDTS8KVYQZJK3T/bin/fm-herdr-lab.sh provision fm-lab-running-flip-10504-30575
+[exit 0]
+tripwire: {"name":"default","default":true,"running":true,"socket_path":"/tmp/fmh.ssZd/.config/herdr/herdr.sock"}
+fixture default pid 10498 ended
+default now: {"name":"default","default":true,"running":false,"socket_path":"/tmp/fmh.ssZd/.config/herdr/herdr.sock"}
+
+$ /Users/nikunjkotecha/.no-mistakes/worktrees/2ee2211c408e/01M50FCWW1A8RDTS8KVYQZJK3T/bin/fm-herdr-lab.sh teardown fm-lab-running-flip-10504-30575
+fm-herdr-lab: FLEET-STATE TRIPWIRE FAILED: default session changed during lab work
+fm-herdr-lab: before: {"name":"default","default":true,"running":true,"socket_path":"/tmp/fmh.ssZd/.config/herdr/herdr.sock"}
+fm-herdr-lab: after:  {"name":"default","default":true,"running":false,"socket_path":"/tmp/fmh.ssZd/.config/herdr/herdr.sock"}
+[exit 1]
+tripwire retained as evidence? yes; lab: []
+fixture default started in /tmp/fmh.ssZd (pid 10968)
+
+$ /Users/nikunjkotecha/.no-mistakes/worktrees/2ee2211c408e/01M50FCWW1A8RDTS8KVYQZJK3T/bin/fm-herdr-lab.sh teardown fm-lab-running-flip-10504-30575
+[exit 0]
+tripwire retained? no
+fixture default pid 10968 ended
+final default: {"name":"default","default":true,"running":false,"socket_path":"/tmp/fmh.ssZd/.config/herdr/herdr.sock"}
+final sessions: ["default"]

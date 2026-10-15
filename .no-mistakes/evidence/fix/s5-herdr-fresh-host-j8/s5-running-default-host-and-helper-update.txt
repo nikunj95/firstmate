@@ -1,0 +1,36 @@
+== real host namespace (captain shape: running default); lab work only on fm-lab-* sessions
+default before: {"name":"default","default":true,"running":true,"socket_path":"~/.config/herdr/herdr.sock"}
+
+######## A. target helper, running default, full lifecycle ########
+
+$ ~/.no-mistakes/worktrees/2ee2211c408e/01M50FCWW1A8RDTS8KVYQZJK3T/bin/fm-herdr-lab.sh provision fm-lab-running-host-18116-5778
+[exit 0]
+tripwire: {"name":"default","default":true,"running":true,"socket_path":"~/.config/herdr/herdr.sock"}
+
+$ ~/.no-mistakes/worktrees/2ee2211c408e/01M50FCWW1A8RDTS8KVYQZJK3T/bin/fm-herdr-lab.sh run fm-lab-running-host-18116-5778 workspace list
+{"id":"cli:workspace:list","result":{"type":"workspace_list","workspaces":[]}}
+[exit 0]
+
+$ ~/.no-mistakes/worktrees/2ee2211c408e/01M50FCWW1A8RDTS8KVYQZJK3T/bin/fm-herdr-lab.sh stop fm-lab-running-host-18116-5778
+{"session":{"default":false,"name":"fm-lab-running-host-18116-5778","running":false,"session_dir":"~/.config/herdr/sessions/fm-lab-running-host-18116-5778","socket_path":"~/.config/herdr/sessions/fm-lab-running-host-18116-5778/herdr.sock"},"stopped":true}
+[exit 0]
+
+$ ~/.no-mistakes/worktrees/2ee2211c408e/01M50FCWW1A8RDTS8KVYQZJK3T/bin/fm-herdr-lab.sh provision fm-lab-running-host-18116-5778
+[exit 0]
+
+$ ~/.no-mistakes/worktrees/2ee2211c408e/01M50FCWW1A8RDTS8KVYQZJK3T/bin/fm-herdr-lab.sh teardown fm-lab-running-host-18116-5778
+[exit 0]
+tripwire retained? no; lab sessions named fm-lab-running-host-18116-5778: 0
+
+######## B. tripwire written by base fc8972c helper, torn down by target helper ########
+
+$ /tmp/fmhs.keeu/base/bin/fm-herdr-lab.sh provision fm-lab-helper-update-18593-26328
+[exit 0]
+base-written tripwire: {"name":"default","default":true,"running":true,"socket_path":"~/.config/herdr/herdr.sock"}
+
+$ ~/.no-mistakes/worktrees/2ee2211c408e/01M50FCWW1A8RDTS8KVYQZJK3T/bin/fm-herdr-lab.sh teardown fm-lab-helper-update-18593-26328
+[exit 0]
+tripwire retained? no; lab sessions named fm-lab-helper-update-18593-26328: 0
+
+default after:  {"name":"default","default":true,"running":true,"socket_path":"~/.config/herdr/herdr.sock"}
+host default unchanged: yes
