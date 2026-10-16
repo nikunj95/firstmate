@@ -1,0 +1,4 @@
+ok - Codemode renderer capability probes, zero-height calls/results, stock framing and expansion, downstream renderers, unrelated tools and immutable results
+ok - repeated real Codemode calls preserve parent/child events, original output, model context, nested usage, session data and stock HTML export
+ok - Pi 1.2.0 Codemode TUI hides repeated script/nested calls gaplessly, restores stock expansion/history and preserves context, usage, session and export
+bash $D/run.sh  3.41s user 1.22s system 54% cpu 8.529 total

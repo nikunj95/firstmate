@@ -1,0 +1,3 @@
+ok - Codemode renderer capability probes, zero-height calls/results, stock framing and expansion, downstream renderers, unrelated tools and immutable results
+skip: tmux or a Herdr-managed environment is needed for the Codemode TUI case
+bash $D/run.sh  1.36s user 0.40s system 77% cpu 2.266 total
